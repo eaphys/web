@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>André Flores — Physics & Philosophy</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -19,6 +19,7 @@
   --card:rgba(255,255,255,0.03);
   --font:'DM Sans',sans-serif;
   --mono:'DM Mono',monospace;
+  --serif:'IM Fell English',Georgia,serif;
 }
 html{scroll-behavior:smooth}
 body{font-family:var(--font);background:var(--bg);color:var(--star);overflow-x:hidden}
@@ -29,7 +30,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--star);overflow-x:h
 .nb2{width:500px;height:500px;background:radial-gradient(circle,rgba(20,10,100,0.2),transparent 70%);bottom:5%;left:-100px}
 .nb3{width:350px;height:350px;background:radial-gradient(circle,rgba(110,50,200,0.12),transparent 70%);top:45%;left:45%}
 
-/* ── HEADER: CoA left · Name center · Contact right ── */
+/* ── HEADER ── */
 header{
   position:fixed;top:0;left:0;right:0;z-index:200;
   display:grid;grid-template-columns:1fr auto 1fr;
@@ -53,37 +54,29 @@ header{
 }
 .hdr-right a:hover{color:var(--glow)}
 
-/* ── SCROLL LAYOUT ── */
+/* ── LAYOUT ── */
 main{position:relative;z-index:1}
 .section{padding:7rem 0;border-bottom:0.5px solid var(--border)}
 .section:last-of-type{border-bottom:none}
 .inner{max-width:1080px;margin:0 auto;padding:0 3rem}
 
 /* ── HERO ── */
-#hero{
-  min-height:100vh;display:flex;align-items:center;
-  padding:0;border-bottom:0.5px solid var(--border);
-}
+#hero{min-height:100vh;display:flex;align-items:center;padding:0;border-bottom:0.5px solid var(--border)}
 .hero-wrap{padding:0 8rem;padding-top:80px;width:100%}
-.hero-eyebrow{
-  font-size:0.68rem;letter-spacing:0.24em;text-transform:uppercase;
-  color:var(--glow);margin-bottom:1.6rem;
-  opacity:0;animation:up 0.7s 0.2s forwards;
-}
 .hero-name{
   font-size:clamp(3.5rem,8vw,7.5rem);font-weight:700;
   line-height:0.92;letter-spacing:-0.04em;color:var(--star);
-  opacity:0;animation:up 0.8s 0.35s forwards;
+  opacity:0;animation:up 0.8s 0.2s forwards;
 }
 .hero-name span{color:var(--glow)}
 .hero-sub{
   margin-top:1.8rem;font-size:1rem;font-weight:300;color:var(--dust);
   max-width:500px;line-height:1.85;
-  opacity:0;animation:up 0.8s 0.5s forwards;
+  opacity:0;animation:up 0.8s 0.38s forwards;
 }
 .hero-btns{
   margin-top:2.5rem;display:flex;gap:1rem;flex-wrap:wrap;
-  opacity:0;animation:up 0.8s 0.65s forwards;
+  opacity:0;animation:up 0.8s 0.55s forwards;
 }
 
 /* ── BUTTONS ── */
@@ -91,12 +84,14 @@ main{position:relative;z-index:1}
   display:inline-flex;align-items:center;gap:0.5rem;
   padding:0.65rem 1.6rem;font-family:var(--font);
   font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;
-  text-decoration:none;border-radius:3px;cursor:pointer;transition:all 0.25s;
+  text-decoration:none;border-radius:3px;cursor:pointer;transition:all 0.25s;border:none;
 }
-.btn-primary{background:var(--accent);color:var(--star);border:none}
+.btn-primary{background:var(--accent);color:var(--star)}
 .btn-primary:hover{background:var(--glow2)}
 .btn-ghost{background:transparent;color:var(--dust);border:0.5px solid var(--border2)}
 .btn-ghost:hover{color:var(--star);border-color:var(--glow)}
+.btn-outline{background:transparent;color:var(--glow);border:0.5px solid var(--border2)}
+.btn-outline:hover{border-color:var(--glow);background:rgba(196,176,255,0.06)}
 
 /* ── SECTION HEADERS ── */
 .sec-label{font-size:0.64rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--glow);margin-bottom:0.6rem}
@@ -120,27 +115,41 @@ main{position:relative;z-index:1}
 .proj-card{
   background:var(--card);border:0.5px solid var(--border);border-radius:4px;
   padding:1.6rem;transition:border-color 0.25s,background 0.25s;
+  display:flex;flex-direction:column;
 }
 .proj-card:hover{border-color:var(--border2);background:rgba(196,176,255,0.05)}
 .proj-card[data-hidden]{display:none}
-.proj-tag{font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:0.6rem}
 .proj-title{font-size:1rem;font-weight:600;letter-spacing:-0.01em;color:var(--star);margin-bottom:0.6rem}
-.proj-desc{font-size:0.84rem;font-weight:300;line-height:1.75;color:var(--dust)}
-.proj-footer{margin-top:1.2rem;display:flex;gap:0.5rem;align-items:center}
-.proj-dot{width:4px;height:4px;border-radius:50%;background:var(--glow);flex-shrink:0}
-.proj-meta{font-size:0.66rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--glow)}
+.proj-desc{font-size:0.84rem;font-weight:300;line-height:1.75;color:var(--dust);flex:1}
+.proj-btn-wrap{margin-top:1.4rem}
 
-/* ── ASTROPHOTOGRAPHY CAROUSEL ── */
+/* ── ASTROPHOTOGRAPHY ── */
 .astro-carousel{position:relative;overflow:hidden;border-radius:4px;margin-bottom:1.2rem}
 .carousel-track{display:flex;transition:transform 0.5s cubic-bezier(0.4,0,0.2,1)}
 .carousel-slide{
   min-width:100%;aspect-ratio:16/9;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
   position:relative;overflow:hidden;
+  background:#070514;
 }
-.slide-bg{position:absolute;inset:0}
-.slide-label{position:absolute;bottom:1.5rem;left:2rem;font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;color:rgba(238,234,248,0.9)}
-.slide-sub{position:absolute;bottom:1.5rem;right:2rem;font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--glow)}
+/* PHOTO SLOT — replace background-image with your photo */
+.carousel-slide img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;opacity:0.85;
+}
+.slide-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(5,4,15,0.7) 0%,transparent 50%);
+}
+.slide-label{position:absolute;bottom:1.5rem;left:2rem;font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;color:rgba(238,234,248,0.92);z-index:2}
+.slide-sub{position:absolute;bottom:1.5rem;right:2rem;font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--glow);z-index:2}
+.slide-placeholder{
+  /* shown when no img is present */
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:absolute;inset:0;
+  color:rgba(196,176,255,0.15);font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;
+  text-align:center;gap:0.5rem;
+}
 .carousel-btn{
   position:absolute;top:50%;transform:translateY(-50%);
   width:40px;height:40px;border-radius:50%;
@@ -155,8 +164,9 @@ main{position:relative;z-index:1}
 .carousel-dots{display:flex;justify-content:center;gap:0.5rem;margin-top:1rem}
 .cdot{width:6px;height:6px;border-radius:50%;background:var(--border2);cursor:pointer;transition:background 0.2s}
 .cdot.active{background:var(--glow)}
+.astro-link-wrap{display:flex;justify-content:center;margin-top:2rem}
 .astro-link{
-  display:inline-flex;align-items:center;gap:0.5rem;margin-top:1.5rem;
+  display:inline-flex;align-items:center;gap:0.5rem;
   font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;
   color:var(--glow);text-decoration:none;
   border:0.5px solid var(--border);padding:0.65rem 1.4rem;border-radius:3px;
@@ -164,30 +174,48 @@ main{position:relative;z-index:1}
 }
 .astro-link:hover{border-color:var(--glow);background:rgba(196,176,255,0.05)}
 
-/* ── PHILOSOPHY: INSIGHT CARDS ── */
-.phil-sub{font-size:0.9rem;font-weight:600;color:var(--star);letter-spacing:-0.01em;margin-bottom:1.2rem;margin-top:0.5rem}
-.phil-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:3rem}
+/* ── PHILOSOPHY SECTION ── */
+.phil-sub{font-size:0.88rem;font-weight:600;color:var(--star);letter-spacing:-0.01em;margin-bottom:1.2rem}
+
+/* Horizontal scroll carousel for insight cards */
+.phil-carousel-wrap{position:relative;margin-bottom:3rem}
+.phil-carousel{
+  display:flex;gap:1rem;
+  overflow-x:auto;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;padding-bottom:0.5rem;
+}
+.phil-carousel::-webkit-scrollbar{display:none}
 .phil-card{
+  scroll-snap-align:start;flex-shrink:0;
+  width:200px;
   background:var(--card);border:0.5px solid var(--border);border-radius:4px;
   aspect-ratio:3/4;display:flex;flex-direction:column;
   align-items:center;justify-content:center;
   cursor:pointer;transition:border-color 0.25s,background 0.25s;
-  text-decoration:none;position:relative;overflow:hidden;padding:2rem;
+  text-decoration:none;position:relative;overflow:hidden;padding:2rem 1.5rem;
 }
 .phil-card:hover{border-color:var(--glow);background:rgba(196,176,255,0.05)}
 .phil-card-title{
-  font-family:var(--mono);font-size:1.7rem;font-weight:500;
-  color:var(--star);text-align:center;line-height:1.2;
+  font-family:var(--serif);font-size:1.9rem;font-weight:400;
+  color:var(--star);text-align:center;line-height:1.15;
 }
 .phil-card-arrow{
-  position:absolute;bottom:1.1rem;right:1.1rem;
+  position:absolute;bottom:1rem;right:1rem;
   font-size:0.75rem;color:var(--glow);opacity:0;transition:opacity 0.2s;
 }
 .phil-card:hover .phil-card-arrow{opacity:1}
 
-/* ── QUESTION / TOPIC CARDS: 9:16 ── */
-.q-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.2rem}
+/* Horizontal scroll carousel for q-cards */
+.q-carousel{
+  display:flex;gap:1rem;
+  overflow-x:auto;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;padding-bottom:0.5rem;
+}
+.q-carousel::-webkit-scrollbar{display:none}
 .q-card{
+  scroll-snap-align:start;flex-shrink:0;width:200px;
   border:0.5px solid var(--border);border-radius:4px;overflow:hidden;
   background:var(--card);transition:border-color 0.25s;
   display:flex;flex-direction:column;
@@ -200,31 +228,30 @@ main{position:relative;z-index:1}
   position:relative;overflow:hidden;flex-shrink:0;
 }
 .q-card-video-bg{position:absolute;inset:0}
-.q-card-body{padding:1rem 1.1rem 1.2rem;flex:1}
-.q-card-type{font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--glow);margin-bottom:0.4rem}
-.q-card-text{font-size:0.88rem;font-weight:500;color:var(--star);line-height:1.4}
+.q-card-body{padding:0.9rem 1rem 1.1rem;flex:1}
+.q-card-type{font-size:0.56rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--glow);margin-bottom:0.35rem}
+.q-card-text{font-size:0.84rem;font-weight:500;color:var(--star);line-height:1.4}
 .q-card-info{
-  position:absolute;bottom:0.75rem;right:0.75rem;
-  font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;
+  position:absolute;bottom:0.65rem;right:0.65rem;
+  font-size:0.56rem;letter-spacing:0.1em;text-transform:uppercase;
   color:var(--glow);background:rgba(5,4,15,0.82);
-  padding:0.28rem 0.6rem;border-radius:2px;border:0.5px solid var(--border2);
+  padding:0.25rem 0.55rem;border-radius:2px;border:0.5px solid var(--border2);
   text-decoration:none;transition:background 0.2s;
 }
 .q-card-info:hover{background:rgba(112,80,192,0.45)}
 
-/* ── CV ── */
-.cv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:560px}
+/* ── CV + CONTACT CENTERED ── */
+.cv-contact-wrap{display:flex;flex-direction:column;align-items:center;text-align:center}
+.cv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:520px;width:100%}
 .cv-card{
   background:var(--card);border:0.5px solid var(--border);border-radius:4px;
-  padding:2rem;display:flex;flex-direction:column;align-items:center;gap:1rem;
-  transition:border-color 0.25s;text-align:center;
+  padding:2rem 1.5rem;display:flex;flex-direction:column;
+  align-items:center;gap:1rem;transition:border-color 0.25s;
 }
 .cv-card:hover{border-color:var(--border2)}
 .cv-lang{font-size:1rem;font-weight:600;color:var(--star);letter-spacing:-0.01em}
 .cv-note{font-size:0.78rem;font-weight:300;color:var(--dust);line-height:1.6}
-
-/* ── CONTACT ── */
-.contact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;max-width:680px}
+.contact-grid{display:flex;flex-direction:column;gap:0.85rem;max-width:520px;width:100%}
 .contact-card{
   display:flex;align-items:center;gap:1rem;
   padding:1rem 1.4rem;border:0.5px solid var(--border);border-radius:3px;
@@ -232,15 +259,11 @@ main{position:relative;z-index:1}
 }
 .contact-card:hover{border-color:var(--glow);background:rgba(196,176,255,0.05)}
 .contact-icon{width:34px;height:34px;border-radius:50%;background:rgba(196,176,255,0.08);display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;color:var(--glow)}
-.contact-label{font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--glow)}
-.contact-val{font-size:0.85rem;color:var(--star);margin-top:0.1rem}
+.contact-label{font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--glow);text-align:left}
+.contact-val{font-size:0.85rem;color:var(--star);margin-top:0.1rem;text-align:left}
 
 /* ── FOOTER ── */
-footer{
-  position:relative;z-index:1;
-  border-top:0.5px solid var(--border);
-  padding:1.8rem 3rem;
-}
+footer{position:relative;z-index:1;border-top:0.5px solid var(--border);padding:1.8rem 3rem}
 .footer-text{font-size:0.68rem;letter-spacing:0.08em;color:var(--dust)}
 
 /* ── ANIMATIONS ── */
@@ -272,16 +295,15 @@ footer{
   </div>
   <div class="hdr-center">André Flores</div>
   <div class="hdr-right">
-    <a href="mailto:eafp141@gmail.com">Contact</a>
+    <a href="#contact">Contact</a>
   </div>
 </header>
 
 <main>
 
-<!-- ══════════════════════ HERO ══════════════════════ -->
+<!-- ══ HERO ══ -->
 <section id="hero">
   <div class="hero-wrap">
-    <p class="hero-eyebrow">Physics · Cosmology · Philosophy</p>
     <h1 class="hero-name">André<br/><span>Flores</span></h1>
     <p class="hero-sub">3rd year Physics Major at Simon Fraser University. Passionate about astronomy, cosmology and metaphysics.</p>
     <div class="hero-btns">
@@ -291,7 +313,7 @@ footer{
   </div>
 </section>
 
-<!-- ══════════════════════ PROJECTS ══════════════════════ -->
+<!-- ══ PROJECTS ══ -->
 <section id="projects" class="section">
   <div class="inner">
     <p class="sec-label fade">Work</p>
@@ -304,53 +326,54 @@ footer{
     </div>
 
     <div class="proj-grid">
+
       <div class="proj-card fade" data-cat="cosmo">
-        <div class="proj-tag">Cosmology · Relativity</div>
         <div class="proj-title">lightcone.lc</div>
         <p class="proj-desc">Interactive light cone visualizer exploring causal structure in Minkowski spacetime. Drag events, watch the causal future and past update in real time.</p>
-        <div class="proj-footer"><div class="proj-dot"></div><span class="proj-meta">Special Relativity</span></div>
+        <div class="proj-btn-wrap"><a class="btn btn-outline" href="#" target="_blank">View Project ↗</a></div>
       </div>
+
       <div class="proj-card fade" data-cat="cosmo">
-        <div class="proj-tag">General Relativity</div>
         <div class="proj-title">Spacetime Curvature Simulator</div>
         <p class="proj-desc">Visualizes geodesics and metric distortion around a massive body. Based on Schwarzschild geometry with adjustable mass parameter.</p>
-        <div class="proj-footer"><div class="proj-dot"></div><span class="proj-meta">GR · Numerical</span></div>
+        <div class="proj-btn-wrap"><a class="btn btn-outline" href="#" target="_blank">View Project ↗</a></div>
       </div>
+
       <div class="proj-card fade" data-cat="cosmo">
-        <div class="proj-tag">Special Relativity</div>
         <div class="proj-title">Reference Frame Switcher</div>
         <p class="proj-desc">Apply Lorentz boosts interactively. Observe time dilation, length contraction, and simultaneity breakdown across inertial frames.</p>
-        <div class="proj-footer"><div class="proj-dot"></div><span class="proj-meta">SR · Interactive</span></div>
+        <div class="proj-btn-wrap"><a class="btn btn-outline" href="#" target="_blank">View Project ↗</a></div>
       </div>
+
       <div class="proj-card fade" data-cat="cosmo">
-        <div class="proj-tag">Astrophysics · N-Body</div>
         <div class="proj-title">Galaxy Collider</div>
         <p class="proj-desc">N-body simulation of galactic mergers. Tune initial conditions, mass ratios, and impact parameter to produce spiral arms, tidal bridges, and merger remnants.</p>
-        <div class="proj-footer"><div class="proj-dot"></div><span class="proj-meta">N-Body · Simulation</span></div>
+        <div class="proj-btn-wrap"><a class="btn btn-outline" href="#" target="_blank">View Project ↗</a></div>
       </div>
+
       <div class="proj-card fade" data-cat="cosmo">
-        <div class="proj-tag">String Theory · Holography</div>
         <div class="proj-title">AdS-CFT Simulation</div>
         <p class="proj-desc">Toy model of the AdS/CFT correspondence. Explore the bulk-boundary duality: perturbations in the bulk AdS space reflected in the boundary CFT.</p>
-        <div class="proj-footer"><div class="proj-dot"></div><span class="proj-meta">Holography · QFT</span></div>
+        <div class="proj-btn-wrap"><a class="btn btn-outline" href="#" target="_blank">View Project ↗</a></div>
       </div>
+
       <div class="proj-card fade" data-cat="misc">
-        <div class="proj-tag">Mathematics · Fractal</div>
         <div class="proj-title">Mandelbrot Generator</div>
         <p class="proj-desc">GPU-accelerated Mandelbrot set explorer with arbitrary-precision zoom, custom color palettes, and Julia set cross-sections.</p>
-        <div class="proj-footer"><div class="proj-dot"></div><span class="proj-meta">Complex Analysis</span></div>
+        <div class="proj-btn-wrap"><a class="btn btn-outline" href="#" target="_blank">View Project ↗</a></div>
       </div>
+
       <div class="proj-card fade" data-cat="misc">
-        <div class="proj-tag">Game · Physics Engine</div>
         <div class="proj-title">Lunar Lander</div>
         <p class="proj-desc">Physics-accurate lunar lander game with realistic thrust, gravity, and fuel dynamics. Implements Runge-Kutta integration for smooth trajectory modeling.</p>
-        <div class="proj-footer"><div class="proj-dot"></div><span class="proj-meta">Classical Mechanics</span></div>
+        <div class="proj-btn-wrap"><a class="btn btn-outline" href="#" target="_blank">View Project ↗</a></div>
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════ ASTROPHOTOGRAPHY ══════════════════════ -->
+<!-- ══ ASTROPHOTOGRAPHY ══ -->
 <section id="astrophotography" class="section">
   <div class="inner">
     <p class="sec-label fade">Gallery</p>
@@ -359,62 +382,50 @@ footer{
     <div class="astro-carousel fade">
       <div class="carousel-track" id="carouselTrack">
 
+        <!-- SLIDE 1 — Lunar: replace with your photo -->
         <div class="carousel-slide">
-          <div class="slide-bg" style="background:radial-gradient(ellipse at 50% 60%,rgba(255,200,80,0.12),transparent 65%),linear-gradient(180deg,#060412,#0e0820)"></div>
-          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.35" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice">
-            <ellipse cx="400" cy="260" rx="380" ry="60" fill="none" stroke="rgba(196,176,255,0.6)" stroke-width="0.8" stroke-dasharray="4 6"/>
-            <circle cx="400" cy="225" r="30" fill="rgba(255,200,80,0.15)" stroke="rgba(255,200,80,0.5)" stroke-width="0.8"/>
-            <circle cx="240" cy="215" r="4" fill="rgba(196,176,255,0.8)"/>
-            <circle cx="560" cy="238" r="3" fill="rgba(196,176,255,0.7)"/>
-            <circle cx="160" cy="255" r="2.5" fill="rgba(150,200,255,0.6)"/>
-            <circle cx="620" cy="252" r="2" fill="rgba(255,180,100,0.7)"/>
-          </svg>
-          <div class="slide-label">Ecliptic</div>
-          <div class="slide-sub">Planetary plane</div>
+          <!-- <img src="lunar.jpg" alt="Lunar"/> -->
+          <div class="slide-overlay"></div>
+          <div class="slide-placeholder">
+            <span style="font-size:1.8rem;opacity:0.3">☽</span>
+            <span>Add your photo here</span>
+          </div>
+          <div class="slide-label">Lunar</div>
+          <div class="slide-sub">Moon surface</div>
         </div>
 
+        <!-- SLIDE 2 — Solar: replace with your photo -->
         <div class="carousel-slide">
-          <div class="slide-bg" style="background:radial-gradient(circle at 50% 50%,rgba(255,140,30,0.2),rgba(200,80,20,0.08) 40%,transparent 70%),linear-gradient(180deg,#0a0408,#160808)"></div>
-          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.5" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice">
-            <circle cx="400" cy="225" r="90" fill="rgba(255,140,30,0.1)" stroke="rgba(255,160,50,0.25)" stroke-width="0.5"/>
-            <circle cx="400" cy="225" r="55" fill="rgba(255,160,50,0.14)" stroke="rgba(255,180,80,0.35)" stroke-width="0.5"/>
-            <circle cx="400" cy="225" r="30" fill="rgba(255,180,80,0.22)" stroke="rgba(255,200,100,0.55)" stroke-width="1"/>
-            <circle cx="400" cy="225" r="14" fill="rgba(255,210,120,0.4)"/>
-          </svg>
+          <!-- <img src="solar.jpg" alt="Solar"/> -->
+          <div class="slide-overlay"></div>
+          <div class="slide-placeholder">
+            <span style="font-size:1.8rem;opacity:0.3">☀</span>
+            <span>Add your photo here</span>
+          </div>
           <div class="slide-label">Solar</div>
           <div class="slide-sub">Sun & chromosphere</div>
         </div>
 
+        <!-- SLIDE 3 — Ursa Major: replace with your photo -->
         <div class="carousel-slide">
-          <div class="slide-bg" style="background:radial-gradient(ellipse at 30% 40%,rgba(100,150,255,0.14),transparent 60%),linear-gradient(200deg,#04040e,#080820)"></div>
-          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.5" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice">
-            <circle cx="200" cy="180" r="6" fill="rgba(200,220,255,0.9)"/>
-            <circle cx="260" cy="155" r="5" fill="rgba(200,220,255,0.85)"/>
-            <circle cx="330" cy="160" r="7" fill="rgba(200,220,255,0.95)"/>
-            <circle cx="400" cy="175" r="5" fill="rgba(200,220,255,0.8)"/>
-            <circle cx="440" cy="200" r="4" fill="rgba(200,220,255,0.75)"/>
-            <circle cx="480" cy="235" r="5.5" fill="rgba(200,220,255,0.88)"/>
-            <circle cx="540" cy="260" r="5" fill="rgba(200,220,255,0.82)"/>
-            <polyline points="200,180 260,155 330,160 400,175 440,200 480,235 540,260" fill="none" stroke="rgba(150,180,255,0.3)" stroke-width="1"/>
-          </svg>
+          <!-- <img src="ursa-major.jpg" alt="Ursa Major"/> -->
+          <div class="slide-overlay"></div>
+          <div class="slide-placeholder">
+            <span style="font-size:1.8rem;opacity:0.3">✦</span>
+            <span>Add your photo here</span>
+          </div>
           <div class="slide-label">Ursa Major</div>
           <div class="slide-sub">Great bear constellation</div>
         </div>
 
+        <!-- SLIDE 4 — Orion: replace with your photo -->
         <div class="carousel-slide">
-          <div class="slide-bg" style="background:radial-gradient(ellipse at 60% 50%,rgba(150,200,255,0.15),rgba(100,80,200,0.07) 40%,transparent 70%),linear-gradient(160deg,#040410,#0a0818)"></div>
-          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.55" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice">
-            <circle cx="310" cy="130" r="7" fill="rgba(200,220,255,0.9)"/>
-            <circle cx="490" cy="145" r="5" fill="rgba(255,180,130,0.9)"/>
-            <circle cx="340" cy="222" r="8" fill="rgba(200,220,255,0.95)"/>
-            <circle cx="400" cy="224" r="8" fill="rgba(200,220,255,0.95)"/>
-            <circle cx="460" cy="226" r="8" fill="rgba(200,220,255,0.95)"/>
-            <circle cx="280" cy="242" r="4" fill="rgba(200,220,255,0.75)"/>
-            <circle cx="520" cy="250" r="4" fill="rgba(200,220,255,0.8)"/>
-            <circle cx="360" cy="312" r="5" fill="rgba(200,220,255,0.7)"/>
-            <circle cx="440" cy="316" r="5" fill="rgba(200,220,255,0.72)"/>
-            <polyline points="310,130 280,242 340,222 400,224 460,226 520,250 490,145" fill="none" stroke="rgba(150,180,255,0.28)" stroke-width="0.8"/>
-          </svg>
+          <!-- <img src="orion.jpg" alt="Orion"/> -->
+          <div class="slide-overlay"></div>
+          <div class="slide-placeholder">
+            <span style="font-size:1.8rem;opacity:0.3">✦</span>
+            <span>Add your photo here</span>
+          </div>
           <div class="slide-label">Orion</div>
           <div class="slide-sub">Hunter constellation & nebula</div>
         </div>
@@ -431,26 +442,33 @@ footer{
       <div class="cdot" data-i="3"></div>
     </div>
 
-    <a class="astro-link fade" href="https://www.astrobin.com" target="_blank">View full gallery on Astrobin &#8599;</a>
+    <div class="astro-link-wrap fade">
+      <a class="astro-link" href="https://www.astrobin.com" target="_blank">View full gallery on Astrobin &#8599;</a>
+    </div>
   </div>
 </section>
 
-<!-- ══════════════════════ PHILOSOPHY ══════════════════════ -->
+<!-- ══ PHILOSOPHY ══ -->
 <section id="philosophy" class="section">
   <div class="inner">
     <p class="sec-label fade">Metaphysics & Insights</p>
     <h2 class="sec-title fade">Philosophy <span>& Open Questions</span></h2>
 
     <p class="phil-sub fade">Interactive Insights</p>
-    <div class="phil-grid">
-      <a class="phil-card fade" href="#" target="_blank">
-        <div class="phil-card-title">Phaedo</div>
-        <div class="phil-card-arrow">&#8599;</div>
-      </a>
-      <a class="phil-card fade" href="#" target="_blank">
-        <div class="phil-card-title">Timaeus</div>
-        <div class="phil-card-arrow">&#8599;</div>
-      </a>
+    <div class="phil-carousel-wrap fade">
+      <div class="phil-carousel">
+
+        <a class="phil-card" href="#" target="_blank">
+          <div class="phil-card-title">Phaedo</div>
+          <div class="phil-card-arrow">&#8599;</div>
+        </a>
+
+        <a class="phil-card" href="#" target="_blank">
+          <div class="phil-card-title">Timaeus</div>
+          <div class="phil-card-arrow">&#8599;</div>
+        </a>
+
+      </div>
     </div>
 
     <div class="divider"></div>
@@ -462,12 +480,12 @@ footer{
       <button class="ftab" data-qfilter="all">All</button>
     </div>
 
-    <div class="q-grid">
+    <div class="q-carousel fade">
 
-      <div class="q-card fade" data-qcat="questions">
+      <div class="q-card" data-qcat="questions">
         <div class="q-card-video">
-          <div class="q-card-video-bg" style="background:radial-gradient(ellipse at 40% 60%,rgba(80,40,180,0.35),transparent 70%),linear-gradient(160deg,#07041a,#0d0820)"></div>
-          <svg style="position:relative;z-index:1;opacity:0.55" width="52" height="52" viewBox="0 0 60 60">
+          <div class="q-card-video-bg" style="background:radial-gradient(ellipse at 40% 60%,rgba(80,40,180,0.38),transparent 70%),linear-gradient(160deg,#07041a,#0d0820)"></div>
+          <svg style="position:relative;z-index:1;opacity:0.5" width="48" height="48" viewBox="0 0 60 60">
             <circle cx="30" cy="30" r="28" fill="none" stroke="rgba(196,176,255,0.4)" stroke-width="0.8"/>
             <circle cx="30" cy="30" r="16" fill="none" stroke="rgba(196,176,255,0.25)" stroke-width="0.6"/>
             <circle cx="30" cy="30" r="3" fill="rgba(196,176,255,0.6)"/>
@@ -480,10 +498,10 @@ footer{
         </div>
       </div>
 
-      <div class="q-card fade" data-qcat="questions">
+      <div class="q-card" data-qcat="questions">
         <div class="q-card-video">
-          <div class="q-card-video-bg" style="background:radial-gradient(ellipse at 60% 40%,rgba(40,20,120,0.4),transparent 65%),linear-gradient(200deg,#050310,#0a0818)"></div>
-          <svg style="position:relative;z-index:1;opacity:0.5" width="52" height="52" viewBox="0 0 60 60">
+          <div class="q-card-video-bg" style="background:radial-gradient(ellipse at 60% 40%,rgba(40,20,120,0.45),transparent 65%),linear-gradient(200deg,#050310,#0a0818)"></div>
+          <svg style="position:relative;z-index:1;opacity:0.48" width="48" height="48" viewBox="0 0 60 60">
             <line x1="30" y1="5" x2="30" y2="55" stroke="rgba(196,176,255,0.5)" stroke-width="0.8"/>
             <line x1="5" y1="30" x2="55" y2="30" stroke="rgba(196,176,255,0.5)" stroke-width="0.8"/>
             <circle cx="30" cy="30" r="12" fill="none" stroke="rgba(196,176,255,0.3)" stroke-width="0.8"/>
@@ -496,10 +514,10 @@ footer{
         </div>
       </div>
 
-      <div class="q-card fade" data-qcat="topics">
+      <div class="q-card" data-qcat="topics">
         <div class="q-card-video">
-          <div class="q-card-video-bg" style="background:radial-gradient(circle at 50% 50%,rgba(100,50,200,0.3),rgba(20,10,80,0.5) 50%,transparent 75%),linear-gradient(180deg,#060414,#0c0820)"></div>
-          <svg style="position:relative;z-index:1;opacity:0.55" width="52" height="52" viewBox="0 0 60 60">
+          <div class="q-card-video-bg" style="background:radial-gradient(circle at 50% 50%,rgba(100,50,200,0.32),rgba(20,10,80,0.5) 50%,transparent 75%),linear-gradient(180deg,#060414,#0c0820)"></div>
+          <svg style="position:relative;z-index:1;opacity:0.52" width="48" height="48" viewBox="0 0 60 60">
             <rect x="18" y="18" width="24" height="24" fill="none" stroke="rgba(196,176,255,0.5)" stroke-width="0.8" transform="rotate(15 30 30)"/>
             <rect x="18" y="18" width="24" height="24" fill="none" stroke="rgba(196,176,255,0.3)" stroke-width="0.6" transform="rotate(-15 30 30)"/>
           </svg>
@@ -515,60 +533,63 @@ footer{
   </div>
 </section>
 
-<!-- ══════════════════════ CV ══════════════════════ -->
+<!-- ══ CV + CONTACT ══ -->
 <section id="cv" class="section">
   <div class="inner">
-    <p class="sec-label fade">Curriculum Vitae</p>
-    <h2 class="sec-title fade">Download <span>My CV</span></h2>
-    <p style="font-size:0.92rem;font-weight:300;color:var(--dust);margin-bottom:2.5rem;max-width:480px;line-height:1.85" class="fade">
-      Available in two versions. Place <span style="font-family:var(--mono);color:var(--glow);font-size:0.82em">cv-en.pdf</span> and <span style="font-family:var(--mono);color:var(--glow);font-size:0.82em">cv-es.pdf</span> alongside this file.
-    </p>
-    <div class="cv-grid fade">
-      <div class="cv-card">
-        <div class="cv-lang">English</div>
-        <p class="cv-note">Full academic and professional curriculum vitae in English.</p>
-        <a class="btn btn-primary" href="cv-en.pdf" download>Download EN</a>
-      </div>
-      <div class="cv-card">
-        <div class="cv-lang">Español</div>
-        <p class="cv-note">Currículum vitae completo en español.</p>
-        <a class="btn btn-primary" href="cv-es.pdf" download>Descargar ES</a>
-      </div>
-    </div>
+    <div class="cv-contact-wrap">
 
-    <div class="divider"></div>
+      <p class="sec-label fade">Curriculum Vitae</p>
+      <h2 class="sec-title fade">Download <span>My CV</span></h2>
+      <p style="font-size:0.9rem;font-weight:300;color:var(--dust);margin-bottom:2.5rem;max-width:460px;line-height:1.85;text-align:center" class="fade">
+        Available in two versions. Place <span style="font-family:var(--mono);color:var(--glow);font-size:0.82em">cv-en.pdf</span> and <span style="font-family:var(--mono);color:var(--glow);font-size:0.82em">cv-es.pdf</span> alongside this file.
+      </p>
+      <div class="cv-grid fade">
+        <div class="cv-card">
+          <div class="cv-lang">English</div>
+          <p class="cv-note">Full academic and professional curriculum vitae in English.</p>
+          <a class="btn btn-primary" href="cv-en.pdf" download>Download EN</a>
+        </div>
+        <div class="cv-card">
+          <div class="cv-lang">Español</div>
+          <p class="cv-note">Currículum vitae completo en español.</p>
+          <a class="btn btn-primary" href="cv-es.pdf" download>Descargar ES</a>
+        </div>
+      </div>
 
-    <p class="sec-label fade">Contact</p>
-    <h2 class="sec-title fade" style="margin-bottom:1.5rem">Get in <span>Touch</span></h2>
-    <div class="contact-grid fade">
-      <a class="contact-card" href="mailto:eafp141@gmail.com">
-        <div class="contact-icon">✉</div>
-        <div>
-          <div class="contact-label">Email</div>
-          <div class="contact-val">eafp141@gmail.com</div>
-        </div>
-      </a>
-      <a class="contact-card" href="https://www.linkedin.com/in/eafp/" target="_blank">
-        <div class="contact-icon" style="font-size:0.8rem;font-weight:600">in</div>
-        <div>
-          <div class="contact-label">LinkedIn</div>
-          <div class="contact-val">linkedin.com/in/eafp</div>
-        </div>
-      </a>
-      <a class="contact-card" href="https://github.com/eaphys" target="_blank">
-        <div class="contact-icon" style="font-family:var(--mono);font-size:0.78rem">gh</div>
-        <div>
-          <div class="contact-label">GitHub</div>
-          <div class="contact-val">github.com/eaphys</div>
-        </div>
-      </a>
+      <div class="divider" style="width:100%;max-width:520px"></div>
+
+      <p class="sec-label fade" id="contact">Contact</p>
+      <h2 class="sec-title fade">Get in <span>Touch</span></h2>
+      <div class="contact-grid fade">
+        <a class="contact-card" href="mailto:eafp141@gmail.com">
+          <div class="contact-icon">✉</div>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-val">eafp141@gmail.com</div>
+          </div>
+        </a>
+        <a class="contact-card" href="https://www.linkedin.com/in/eafp/" target="_blank">
+          <div class="contact-icon" style="font-size:0.8rem;font-weight:600">in</div>
+          <div>
+            <div class="contact-label">LinkedIn</div>
+            <div class="contact-val">linkedin.com/in/eafp</div>
+          </div>
+        </a>
+        <a class="contact-card" href="https://github.com/eaphys" target="_blank">
+          <div class="contact-icon" style="font-family:var(--mono);font-size:0.78rem">gh</div>
+          <div>
+            <div class="contact-label">GitHub</div>
+            <div class="contact-val">github.com/eaphys</div>
+          </div>
+        </a>
+      </div>
+
     </div>
   </div>
 </section>
 
 </main>
 
-<!-- ══════════════════════ FOOTER ══════════════════════ -->
 <footer>
   <span class="footer-text">© 2026 André Flores — Built for GitHub Pages</span>
 </footer>
@@ -585,9 +606,7 @@ rsz();iS();dS();
 window.addEventListener('resize',()=>{rsz();iS()});
 
 /* ── SCROLL FADE-IN ── */
-const io=new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
-},{threshold:0.1});
+const io=new IntersectionObserver((e)=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{threshold:0.1});
 document.querySelectorAll('.fade').forEach(el=>io.observe(el));
 
 /* ── PROJECT FILTER ── */
@@ -602,7 +621,7 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
   });
 });
 
-/* ── CAROUSEL ── */
+/* ── ASTRO CAROUSEL ── */
 let carIdx=0;
 const track=document.getElementById('carouselTrack');
 const dots=document.querySelectorAll('.cdot');
@@ -615,7 +634,7 @@ function goTo(i){
 document.getElementById('carPrev').addEventListener('click',()=>goTo(carIdx-1));
 document.getElementById('carNext').addEventListener('click',()=>goTo(carIdx+1));
 dots.forEach(d=>d.addEventListener('click',()=>goTo(+d.dataset.i)));
-setInterval(()=>goTo(carIdx+1),5000);
+setInterval(()=>goTo(carIdx+1),5500);
 
 /* ── QUESTION FILTER ── */
 document.querySelectorAll('[data-qfilter]').forEach(btn=>{
@@ -631,4 +650,3 @@ document.querySelectorAll('[data-qfilter]').forEach(btn=>{
 </script>
 </body>
 </html>
-

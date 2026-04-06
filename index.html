@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>André — Physics & Philosophy</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --star: #f0ede6;
+      --dust: #9a9ab0;
+      --glow: #c8b8ff;
+      --accent: #7b5ea7;
+      --deep: #060610;
+      --card-bg: rgba(255,255,255,0.03);
+      --border: rgba(200,184,255,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--deep);
+      color: var(--star);
+      overflow-x: hidden;
+    }
+
+    #starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+
+    .nebula { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; }
+    .nebula-1 { width: 600px; height: 600px; background: rgba(80,40,140,0.18); top: -100px; right: -100px; }
+    .nebula-2 { width: 400px; height: 400px; background: rgba(20,60,120,0.15); bottom: 10%; left: -80px; }
+    .nebula-3 { width: 300px; height: 300px; background: rgba(100,50,160,0.1); top: 40%; left: 50%; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.4rem 4rem;
+      backdrop-filter: blur(16px);
+      background: rgba(6,6,16,0.6);
+      border-bottom: 0.5px solid var(--border);
+    }
+    .nav-logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.04em; color: var(--glow); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dust); text-decoration: none; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--star); }
+
+    section { position: relative; z-index: 1; padding: 7rem 4rem; max-width: 1100px; margin: 0 auto; }
+
+    #hero {
+      min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+      padding-top: 8rem; max-width: 100%; padding-left: 8rem; padding-right: 4rem;
+    }
+    .hero-eyebrow {
+      font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--glow);
+      margin-bottom: 1.8rem; opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+    }
+    .hero-name {
+      font-size: clamp(4rem, 9vw, 8rem); font-weight: 600; line-height: 0.95;
+      letter-spacing: -0.03em; color: var(--star);
+      opacity: 0; animation: fadeUp 0.9s 0.4s forwards;
+    }
+    .hero-name span { color: var(--glow); }
+    .hero-tagline {
+      margin-top: 2rem; font-size: 1rem; font-weight: 300; color: var(--dust);
+      max-width: 520px; line-height: 1.85;
+      opacity: 0; animation: fadeUp 0.9s 0.6s forwards;
+    }
+    .hero-cta {
+      margin-top: 3rem; display: flex; gap: 1.2rem; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp 0.9s 0.8s forwards;
+    }
+
+    .btn {
+      display: inline-block; padding: 0.7rem 1.8rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      text-decoration: none; border-radius: 3px; transition: all 0.3s;
+    }
+    .btn-outline { border: 0.5px solid var(--glow); color: var(--glow); background: transparent; }
+    .btn-outline:hover { background: rgba(200,184,255,0.08); }
+    .btn-ghost { border: 0.5px solid var(--border); color: var(--dust); background: transparent; }
+    .btn-ghost:hover { color: var(--star); border-color: rgba(200,184,255,0.3); }
+
+    .section-label { font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--glow); margin-bottom: 0.8rem; }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; line-height: 1.1;
+      letter-spacing: -0.02em; color: var(--star); margin-bottom: 3rem;
+    }
+    .section-title span { color: var(--glow); }
+
+    .divider { width: 100%; height: 0.5px; background: var(--border); }
+
+    .about-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; align-items: start; }
+    .about-portrait {
+      aspect-ratio: 3/4;
+      background: linear-gradient(160deg, rgba(80,40,140,0.4), rgba(20,30,80,0.6));
+      border: 0.5px solid var(--border); border-radius: 3px;
+      display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
+    }
+    .portrait-placeholder { font-size: 3rem; font-weight: 600; color: rgba(200,184,255,0.25); }
+    .portrait-note { position: absolute; bottom: 1rem; font-size: 0.62rem; letter-spacing: 0.1em; color: rgba(200,184,255,0.35); text-align: center; }
+    .about-text p { font-size: 0.95rem; font-weight: 300; line-height: 1.9; color: var(--dust); margin-bottom: 1.4rem; }
+    .about-text p strong { color: var(--star); font-weight: 500; }
+    .about-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+    .fact { border-left: 1px solid var(--accent); padding-left: 1rem; }
+    .fact-label { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--glow); }
+    .fact-value { font-size: 0.88rem; font-weight: 400; color: var(--star); margin-top: 0.25rem; }
+
+    #philosophy { background: rgba(80,40,140,0.04); }
+    .philosophy-quote {
+      font-size: clamp(1.1rem, 2.2vw, 1.75rem); font-weight: 300; color: var(--glow);
+      line-height: 1.65; border-left: 1px solid var(--accent);
+      padding-left: 2.5rem; margin-bottom: 3rem;
+    }
+    .philosophy-body { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .philosophy-block h4 { font-size: 0.95rem; font-weight: 600; letter-spacing: -0.01em; color: var(--star); margin-bottom: 0.8rem; }
+    .philosophy-block p { font-size: 0.88rem; font-weight: 300; line-height: 1.9; color: var(--dust); }
+
+    .research-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .research-card {
+      background: var(--card-bg); border: 0.5px solid var(--border); border-radius: 3px;
+      padding: 2rem; transition: border-color 0.3s, background 0.3s;
+    }
+    .research-card:hover { border-color: rgba(200,184,255,0.3); background: rgba(200,184,255,0.04); }
+    .card-tag { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.8rem; }
+    .card-title { font-size: 1rem; font-weight: 600; letter-spacing: -0.01em; color: var(--star); margin-bottom: 0.8rem; line-height: 1.35; }
+    .card-desc { font-size: 0.85rem; font-weight: 300; line-height: 1.75; color: var(--dust); }
+    .card-footer { margin-top: 1.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--glow); }
+    .card-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--glow); }
+
+    .timeline { display: flex; flex-direction: column; }
+    .timeline-item { display: grid; grid-template-columns: 180px 1px 1fr; gap: 0 2.5rem; padding-bottom: 3rem; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-date { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em; color: var(--glow); padding-top: 0.2rem; text-align: right; }
+    .timeline-line-wrap { display: flex; flex-direction: column; align-items: center; }
+    .timeline-dot { width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--glow); background: var(--deep); flex-shrink: 0; margin-top: 0.35rem; }
+    .timeline-line { width: 0.5px; flex: 1; background: var(--border); margin-top: 4px; }
+    .timeline-item:last-child .timeline-line { display: none; }
+    .timeline-content h3 { font-size: 1.05rem; font-weight: 600; letter-spacing: -0.01em; color: var(--star); margin-bottom: 0.2rem; }
+    .timeline-org { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.8rem; }
+    .timeline-desc { font-size: 0.87rem; font-weight: 300; line-height: 1.8; color: var(--dust); }
+
+    #cv { text-align: center; }
+    .cv-inner { display: inline-flex; flex-direction: column; align-items: center; gap: 2rem; }
+    .cv-text { font-size: 0.9rem; font-weight: 300; color: var(--dust); max-width: 480px; line-height: 1.9; }
+
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; }
+    .contact-intro p { font-size: 0.95rem; font-weight: 300; line-height: 1.9; color: var(--dust); margin-bottom: 1.4rem; }
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 1rem;
+      color: var(--dust); text-decoration: none;
+      padding: 1rem 1.4rem; border: 0.5px solid var(--border); border-radius: 3px; transition: all 0.3s;
+    }
+    .contact-link:hover { color: var(--star); border-color: rgba(200,184,255,0.3); background: rgba(200,184,255,0.03); }
+    .contact-link-label { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--glow); }
+    .contact-link-value { font-size: 0.86rem; color: var(--star); margin-top: 0.15rem; }
+
+    footer {
+      position: relative; z-index: 1;
+      border-top: 0.5px solid var(--border); padding: 2rem 4rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-text { font-size: 0.7rem; letter-spacing: 0.08em; color: var(--dust); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 860px) {
+      nav { padding: 1.2rem 2rem; }
+      .nav-links { gap: 1.5rem; }
+      #hero { padding-left: 2rem; padding-right: 2rem; }
+      section { padding: 5rem 2rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .about-portrait { display: none; }
+      .philosophy-body { grid-template-columns: 1fr; gap: 2rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .timeline-item { grid-template-columns: 90px 1px 1fr; gap: 0 1.5rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+<div class="nebula nebula-1"></div>
+<div class="nebula nebula-2"></div>
+<div class="nebula nebula-3"></div>
+
+<nav>
+  <span class="nav-logo">André</span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#philosophy">Philosophy</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <p class="hero-eyebrow">Lorem · Ipsum · Dolor</p>
+  <h1 class="hero-name">
+    Lorem<br/>
+    <span>Ipsum</span>
+  </h1>
+  <p class="hero-tagline">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+  </p>
+  <div class="hero-cta">
+    <a class="btn btn-outline" href="#research">Lorem ipsum</a>
+    <a class="btn btn-ghost" href="#cv">Dolor sit amet</a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="about">
+  <p class="section-label fade-in">Lorem ipsum</p>
+  <h2 class="section-title fade-in">Dolor sit amet<br/><span>consectetur</span></h2>
+  <div class="about-grid">
+    <div class="about-portrait">
+      <span class="portrait-placeholder">A</span>
+      <span class="portrait-note">Replace with your photo</span>
+    </div>
+    <div class="about-text fade-in">
+      <p>
+        Lorem ipsum dolor sit amet, <strong>consectetur adipiscing elit</strong>, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
+      </p>
+      <p>
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <strong>Excepteur sint occaecat cupidatat</strong> non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+      <p>
+        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo <strong>inventore veritatis</strong> et quasi architecto beatae vitae.
+      </p>
+      <div class="about-facts">
+        <div class="fact">
+          <div class="fact-label">Origin</div>
+          <div class="fact-value">Lorem, Ipsum</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">Field</div>
+          <div class="fact-value">Dolor & Amet</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">Currently</div>
+          <div class="fact-value">Consectetur</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">Languages</div>
+          <div class="fact-value">Lorem · Ipsum</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="philosophy">
+  <p class="section-label fade-in">Lorem ipsum</p>
+  <h2 class="section-title fade-in">Dolor sit amet<br/><span>adipiscing elit</span></h2>
+  <blockquote class="philosophy-quote fade-in">
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+  </blockquote>
+  <div class="philosophy-body">
+    <div class="philosophy-block fade-in">
+      <h4>Lorem ipsum dolor</h4>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+    <div class="philosophy-block fade-in">
+      <h4>Sed ut perspiciatis</h4>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt.</p>
+    </div>
+    <div class="philosophy-block fade-in">
+      <h4>Nemo enim ipsam</h4>
+      <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt neque porro quisquam est qui dolorem.</p>
+    </div>
+    <div class="philosophy-block fade-in">
+      <h4>Quis autem vel</h4>
+      <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur vel illum qui dolorem eum fugiat quo voluptas nulla pariatur et harum quidem rerum.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="research">
+  <p class="section-label fade-in">Lorem ipsum</p>
+  <h2 class="section-title fade-in">Dolor sit amet<br/><span>consectetur</span></h2>
+  <div class="research-grid">
+    <div class="research-card fade-in">
+      <div class="card-tag">Lorem · Ipsum</div>
+      <div class="card-title">Lorem ipsum dolor sit amet consectetur</div>
+      <p class="card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam.</p>
+      <div class="card-footer"><div class="card-dot"></div>Lorem · 2026</div>
+    </div>
+    <div class="research-card fade-in">
+      <div class="card-tag">Dolor · Amet</div>
+      <div class="card-title">Sed ut perspiciatis unde omnis</div>
+      <p class="card-desc">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium totam rem aperiam eaque ipsa quae ab illo inventore.</p>
+      <div class="card-footer"><div class="card-dot"></div>Ipsum · Coursework</div>
+    </div>
+    <div class="research-card fade-in">
+      <div class="card-tag">Consectetur</div>
+      <div class="card-title">Nemo enim ipsam voluptatem sequi</div>
+      <p class="card-desc">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed quia consequuntur magni dolores eos qui ratione sequi nesciunt.</p>
+      <div class="card-footer"><div class="card-dot"></div>Lorem · 2025</div>
+    </div>
+    <div class="research-card fade-in">
+      <div class="card-tag">Adipiscing · Elit</div>
+      <div class="card-title">Quis autem vel eum iure reprehenderit</div>
+      <p class="card-desc">Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur vel illum dolorem eum fugiat quo.</p>
+      <div class="card-footer"><div class="card-dot"></div>Lorem · In progress</div>
+    </div>
+    <div class="research-card fade-in" style="border-style: dashed; opacity: 0.45;">
+      <div class="card-tag">Add your project</div>
+      <div class="card-title">Your next project here</div>
+      <p class="card-desc">Edit index.html to add your own research, papers, or side projects in this card.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="experience">
+  <p class="section-label fade-in">Lorem ipsum</p>
+  <h2 class="section-title fade-in">Dolor sit<br/><span>amet consectetur</span></h2>
+  <div class="timeline">
+    <div class="timeline-item fade-in">
+      <div class="timeline-date">2024 – Now</div>
+      <div class="timeline-line-wrap"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+      <div class="timeline-content">
+        <h3>Lorem Ipsum Manager</h3>
+        <div class="timeline-org">Dolor Sit Amet — Consectetur</div>
+        <p class="timeline-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris.</p>
+      </div>
+    </div>
+    <div class="timeline-item fade-in">
+      <div class="timeline-date">2024</div>
+      <div class="timeline-line-wrap"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+      <div class="timeline-content">
+        <h3>Dolor Amet Competitor</h3>
+        <div class="timeline-org">Lorem Ipsum & Adipiscing Competition</div>
+        <p class="timeline-desc">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium totam rem aperiam eaque ipsa quae ab illo inventore veritatis.</p>
+      </div>
+    </div>
+    <div class="timeline-item fade-in">
+      <div class="timeline-date">2023 – Now</div>
+      <div class="timeline-line-wrap"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+      <div class="timeline-content">
+        <h3>Lorem Ipsum Student</h3>
+        <div class="timeline-org">Consectetur University (Abroad)</div>
+        <p class="timeline-desc">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+      </div>
+    </div>
+    <div class="timeline-item fade-in">
+      <div class="timeline-date">Add more</div>
+      <div class="timeline-line-wrap"><div class="timeline-dot" style="border-style:dashed;opacity:0.35;"></div></div>
+      <div class="timeline-content" style="opacity:0.35;">
+        <h3>Your previous role</h3>
+        <div class="timeline-org">Organization</div>
+        <p class="timeline-desc">Edit index.html to fill in your experience timeline.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="cv">
+  <p class="section-label fade-in">Curriculum Vitae</p>
+  <h2 class="section-title fade-in">Lorem ipsum<br/><span>dolor sit</span></h2>
+  <div class="cv-inner fade-in">
+    <p class="cv-text">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Place your PDF as <code style="font-size:0.82em;color:var(--glow);font-family:'DM Mono',monospace;">cv.pdf</code> in the same folder.
+    </p>
+    <a class="btn btn-outline" href="cv.pdf" download>Download CV (PDF)</a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="contact">
+  <p class="section-label fade-in">Contact</p>
+  <h2 class="section-title fade-in">Lorem ipsum<br/><span>dolor amet</span></h2>
+  <div class="contact-grid">
+    <div class="contact-intro fade-in">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud.</p>
+      <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident.</p>
+    </div>
+    <div class="contact-links fade-in">
+      <a class="contact-link" href="mailto:your@email.com">
+        <div><div class="contact-link-label">Email</div><div class="contact-link-value">your@email.com</div></div>
+      </a>
+      <a class="contact-link" href="https://linkedin.com/in/yourprofile" target="_blank">
+        <div><div class="contact-link-label">LinkedIn</div><div class="contact-link-value">linkedin.com/in/yourprofile</div></div>
+      </a>
+      <a class="contact-link" href="https://github.com/yourusername" target="_blank">
+        <div><div class="contact-link-label">GitHub</div><div class="contact-link-value">github.com/yourusername</div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-text">© 2025 André — Built for GitHub Pages</span>
+  <span class="footer-text">Lorem · Ipsum · Dolor</span>
+</footer>
+
+<script>
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  function initStars() {
+    stars = [];
+    const count = Math.floor((canvas.width * canvas.height) / 4000);
+    for (let i = 0; i < count; i++) {
+      stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*1.2+0.2, a: Math.random(), speed: Math.random()*0.3+0.05 });
+    }
+  }
+  function drawStars() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    stars.forEach(s => {
+      s.a += s.speed*0.008;
+      const alpha = (Math.sin(s.a)+1)/2*0.8+0.1;
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(240,237,230,${alpha})`; ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+  resize(); initStars(); drawStars();
+  window.addEventListener('resize', ()=>{ resize(); initStars(); });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

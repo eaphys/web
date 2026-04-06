@@ -1,449 +1,634 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>André Flores</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>André Flores — Physics & Philosophy</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#05040f;
+  --star:#eeeaf8;
+  --dust:#8e8aaa;
+  --glow:#c4b0ff;
+  --glow2:#a088e8;
+  --accent:#7050c0;
+  --border:rgba(196,176,255,0.1);
+  --border2:rgba(196,176,255,0.22);
+  --card:rgba(255,255,255,0.03);
+  --font:'DM Sans',sans-serif;
+  --mono:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--star);overflow-x:hidden}
 
-    :root {
-      --star: #f0ede6;
-      --dust: #9a9ab0;
-      --glow: #c8b8ff;
-      --accent: #7b5ea7;
-      --deep: #060610;
-      --card-bg: rgba(255,255,255,0.03);
-      --border: rgba(200,184,255,0.12);
-    }
+#starfield{position:fixed;inset:0;pointer-events:none;z-index:0}
+.nebula{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px)}
+.nb1{width:700px;height:700px;background:radial-gradient(circle,rgba(90,40,180,0.18),transparent 70%);top:-150px;right:-150px}
+.nb2{width:500px;height:500px;background:radial-gradient(circle,rgba(20,10,100,0.2),transparent 70%);bottom:5%;left:-100px}
+.nb3{width:350px;height:350px;background:radial-gradient(circle,rgba(110,50,200,0.12),transparent 70%);top:45%;left:45%}
 
-    html { scroll-behavior: smooth; }
+/* ── HEADER: CoA left · Name center · Contact right ── */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;padding:1.1rem 3rem;
+  background:rgba(5,4,15,0.72);backdrop-filter:blur(20px);
+  border-bottom:0.5px solid var(--border);
+}
+.hdr-left{display:flex;align-items:center}
+.coat-of-arms{
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(196,176,255,0.08);border:0.5px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;color:var(--glow);transition:background 0.25s;
+}
+.coat-of-arms:hover{background:rgba(196,176,255,0.15)}
+.hdr-center{font-size:0.95rem;font-weight:600;letter-spacing:0.06em;color:var(--star);text-align:center}
+.hdr-right{display:flex;justify-content:flex-end}
+.hdr-right a{
+  font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--dust);text-decoration:none;transition:color 0.25s;
+}
+.hdr-right a:hover{color:var(--glow)}
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--deep);
-      color: var(--star);
-      overflow-x: hidden;
-    }
+/* ── SCROLL LAYOUT ── */
+main{position:relative;z-index:1}
+.section{padding:7rem 0;border-bottom:0.5px solid var(--border)}
+.section:last-of-type{border-bottom:none}
+.inner{max-width:1080px;margin:0 auto;padding:0 3rem}
 
-    #starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+/* ── HERO ── */
+#hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:0;border-bottom:0.5px solid var(--border);
+}
+.hero-wrap{padding:0 8rem;padding-top:80px;width:100%}
+.hero-eyebrow{
+  font-size:0.68rem;letter-spacing:0.24em;text-transform:uppercase;
+  color:var(--glow);margin-bottom:1.6rem;
+  opacity:0;animation:up 0.7s 0.2s forwards;
+}
+.hero-name{
+  font-size:clamp(3.5rem,8vw,7.5rem);font-weight:700;
+  line-height:0.92;letter-spacing:-0.04em;color:var(--star);
+  opacity:0;animation:up 0.8s 0.35s forwards;
+}
+.hero-name span{color:var(--glow)}
+.hero-sub{
+  margin-top:1.8rem;font-size:1rem;font-weight:300;color:var(--dust);
+  max-width:500px;line-height:1.85;
+  opacity:0;animation:up 0.8s 0.5s forwards;
+}
+.hero-btns{
+  margin-top:2.5rem;display:flex;gap:1rem;flex-wrap:wrap;
+  opacity:0;animation:up 0.8s 0.65s forwards;
+}
 
-    .nebula { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; }
-    .nebula-1 { width: 600px; height: 600px; background: rgba(80,40,140,0.18); top: -100px; right: -100px; }
-    .nebula-2 { width: 400px; height: 400px; background: rgba(20,60,120,0.15); bottom: 10%; left: -80px; }
-    .nebula-3 { width: 300px; height: 300px; background: rgba(100,50,160,0.1); top: 40%; left: 50%; }
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  padding:0.65rem 1.6rem;font-family:var(--font);
+  font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;
+  text-decoration:none;border-radius:3px;cursor:pointer;transition:all 0.25s;
+}
+.btn-primary{background:var(--accent);color:var(--star);border:none}
+.btn-primary:hover{background:var(--glow2)}
+.btn-ghost{background:transparent;color:var(--dust);border:0.5px solid var(--border2)}
+.btn-ghost:hover{color:var(--star);border-color:var(--glow)}
 
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 1.4rem 4rem;
-      backdrop-filter: blur(16px);
-      background: rgba(6,6,16,0.6);
-      border-bottom: 0.5px solid var(--border);
-    }
-    .nav-logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.04em; color: var(--glow); }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dust); text-decoration: none; transition: color 0.3s; }
-    .nav-links a:hover { color: var(--star); }
+/* ── SECTION HEADERS ── */
+.sec-label{font-size:0.64rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--glow);margin-bottom:0.6rem}
+.sec-title{font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-0.03em;line-height:1.05;color:var(--star);margin-bottom:2.5rem}
+.sec-title span{color:var(--glow)}
+.divider{width:100%;height:0.5px;background:var(--border);margin:4rem 0}
 
-    section { position: relative; z-index: 1; padding: 7rem 4rem; max-width: 1100px; margin: 0 auto; }
+/* ── FILTER TABS ── */
+.filter-tabs{display:flex;gap:0.5rem;margin-bottom:2rem;flex-wrap:wrap}
+.ftab{
+  padding:0.45rem 1.2rem;font-family:var(--font);
+  font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;
+  background:transparent;color:var(--dust);
+  border:0.5px solid var(--border);border-radius:2px;cursor:pointer;transition:all 0.22s;
+}
+.ftab:hover{color:var(--star);border-color:var(--border2)}
+.ftab.active{background:var(--accent);color:var(--star);border-color:var(--accent)}
 
-    #hero {
-      min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
-      padding-top: 8rem; max-width: 100%; padding-left: 8rem; padding-right: 4rem;
-    }
-    .hero-eyebrow {
-      font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--glow);
-      margin-bottom: 1.8rem; opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
-    }
-    .hero-name {
-      font-size: clamp(4rem, 9vw, 8rem); font-weight: 600; line-height: 0.95;
-      letter-spacing: -0.03em; color: var(--star);
-      opacity: 0; animation: fadeUp 0.9s 0.4s forwards;
-    }
-    .hero-name span { color: var(--glow); }
-    .hero-tagline {
-      margin-top: 2rem; font-size: 1rem; font-weight: 300; color: var(--dust);
-      max-width: 520px; line-height: 1.85;
-      opacity: 0; animation: fadeUp 0.9s 0.6s forwards;
-    }
-    .hero-cta {
-      margin-top: 3rem; display: flex; gap: 1.2rem; flex-wrap: wrap;
-      opacity: 0; animation: fadeUp 0.9s 0.8s forwards;
-    }
+/* ── PROJECT GRID ── */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem}
+.proj-card{
+  background:var(--card);border:0.5px solid var(--border);border-radius:4px;
+  padding:1.6rem;transition:border-color 0.25s,background 0.25s;
+}
+.proj-card:hover{border-color:var(--border2);background:rgba(196,176,255,0.05)}
+.proj-card[data-hidden]{display:none}
+.proj-tag{font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:0.6rem}
+.proj-title{font-size:1rem;font-weight:600;letter-spacing:-0.01em;color:var(--star);margin-bottom:0.6rem}
+.proj-desc{font-size:0.84rem;font-weight:300;line-height:1.75;color:var(--dust)}
+.proj-footer{margin-top:1.2rem;display:flex;gap:0.5rem;align-items:center}
+.proj-dot{width:4px;height:4px;border-radius:50%;background:var(--glow);flex-shrink:0}
+.proj-meta{font-size:0.66rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--glow)}
 
-    .btn {
-      display: inline-block; padding: 0.7rem 1.8rem;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
-      text-decoration: none; border-radius: 3px; transition: all 0.3s;
-    }
-    .btn-outline { border: 0.5px solid var(--glow); color: var(--glow); background: transparent; }
-    .btn-outline:hover { background: rgba(200,184,255,0.08); }
-    .btn-ghost { border: 0.5px solid var(--border); color: var(--dust); background: transparent; }
-    .btn-ghost:hover { color: var(--star); border-color: rgba(200,184,255,0.3); }
+/* ── ASTROPHOTOGRAPHY CAROUSEL ── */
+.astro-carousel{position:relative;overflow:hidden;border-radius:4px;margin-bottom:1.2rem}
+.carousel-track{display:flex;transition:transform 0.5s cubic-bezier(0.4,0,0.2,1)}
+.carousel-slide{
+  min-width:100%;aspect-ratio:16/9;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.slide-bg{position:absolute;inset:0}
+.slide-label{position:absolute;bottom:1.5rem;left:2rem;font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;color:rgba(238,234,248,0.9)}
+.slide-sub{position:absolute;bottom:1.5rem;right:2rem;font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--glow)}
+.carousel-btn{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(5,4,15,0.7);border:0.5px solid var(--border2);
+  color:var(--star);font-size:1.1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.2s;z-index:10;
+}
+.carousel-btn:hover{background:rgba(112,80,192,0.5)}
+.carousel-prev{left:1rem}
+.carousel-next{right:1rem}
+.carousel-dots{display:flex;justify-content:center;gap:0.5rem;margin-top:1rem}
+.cdot{width:6px;height:6px;border-radius:50%;background:var(--border2);cursor:pointer;transition:background 0.2s}
+.cdot.active{background:var(--glow)}
+.astro-link{
+  display:inline-flex;align-items:center;gap:0.5rem;margin-top:1.5rem;
+  font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--glow);text-decoration:none;
+  border:0.5px solid var(--border);padding:0.65rem 1.4rem;border-radius:3px;
+  transition:all 0.25s;
+}
+.astro-link:hover{border-color:var(--glow);background:rgba(196,176,255,0.05)}
 
-    .section-label { font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--glow); margin-bottom: 0.8rem; }
-    .section-title {
-      font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; line-height: 1.1;
-      letter-spacing: -0.02em; color: var(--star); margin-bottom: 3rem;
-    }
-    .section-title span { color: var(--glow); }
+/* ── PHILOSOPHY: INSIGHT CARDS ── */
+.phil-sub{font-size:0.9rem;font-weight:600;color:var(--star);letter-spacing:-0.01em;margin-bottom:1.2rem;margin-top:0.5rem}
+.phil-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:3rem}
+.phil-card{
+  background:var(--card);border:0.5px solid var(--border);border-radius:4px;
+  aspect-ratio:3/4;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  cursor:pointer;transition:border-color 0.25s,background 0.25s;
+  text-decoration:none;position:relative;overflow:hidden;padding:2rem;
+}
+.phil-card:hover{border-color:var(--glow);background:rgba(196,176,255,0.05)}
+.phil-card-title{
+  font-family:var(--mono);font-size:1.7rem;font-weight:500;
+  color:var(--star);text-align:center;line-height:1.2;
+}
+.phil-card-arrow{
+  position:absolute;bottom:1.1rem;right:1.1rem;
+  font-size:0.75rem;color:var(--glow);opacity:0;transition:opacity 0.2s;
+}
+.phil-card:hover .phil-card-arrow{opacity:1}
 
-    .divider { width: 100%; height: 0.5px; background: var(--border); }
+/* ── QUESTION / TOPIC CARDS: 9:16 ── */
+.q-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.2rem}
+.q-card{
+  border:0.5px solid var(--border);border-radius:4px;overflow:hidden;
+  background:var(--card);transition:border-color 0.25s;
+  display:flex;flex-direction:column;
+}
+.q-card:hover{border-color:var(--border2)}
+.q-card[data-hidden]{display:none}
+.q-card-video{
+  aspect-ratio:9/16;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;flex-shrink:0;
+}
+.q-card-video-bg{position:absolute;inset:0}
+.q-card-body{padding:1rem 1.1rem 1.2rem;flex:1}
+.q-card-type{font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--glow);margin-bottom:0.4rem}
+.q-card-text{font-size:0.88rem;font-weight:500;color:var(--star);line-height:1.4}
+.q-card-info{
+  position:absolute;bottom:0.75rem;right:0.75rem;
+  font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--glow);background:rgba(5,4,15,0.82);
+  padding:0.28rem 0.6rem;border-radius:2px;border:0.5px solid var(--border2);
+  text-decoration:none;transition:background 0.2s;
+}
+.q-card-info:hover{background:rgba(112,80,192,0.45)}
 
-    .about-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; align-items: start; }
-    .about-portrait {
-      aspect-ratio: 3/4;
-      background: linear-gradient(160deg, rgba(80,40,140,0.4), rgba(20,30,80,0.6));
-      border: 0.5px solid var(--border); border-radius: 3px;
-      display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
-    }
-    .portrait-placeholder { font-size: 3rem; font-weight: 600; color: rgba(200,184,255,0.25); }
-    .portrait-note { position: absolute; bottom: 1rem; font-size: 0.62rem; letter-spacing: 0.1em; color: rgba(200,184,255,0.35); text-align: center; }
-    .about-text p { font-size: 0.95rem; font-weight: 300; line-height: 1.9; color: var(--dust); margin-bottom: 1.4rem; }
-    .about-text p strong { color: var(--star); font-weight: 500; }
-    .about-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
-    .fact { border-left: 1px solid var(--accent); padding-left: 1rem; }
-    .fact-label { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--glow); }
-    .fact-value { font-size: 0.88rem; font-weight: 400; color: var(--star); margin-top: 0.25rem; }
+/* ── CV ── */
+.cv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:560px}
+.cv-card{
+  background:var(--card);border:0.5px solid var(--border);border-radius:4px;
+  padding:2rem;display:flex;flex-direction:column;align-items:center;gap:1rem;
+  transition:border-color 0.25s;text-align:center;
+}
+.cv-card:hover{border-color:var(--border2)}
+.cv-lang{font-size:1rem;font-weight:600;color:var(--star);letter-spacing:-0.01em}
+.cv-note{font-size:0.78rem;font-weight:300;color:var(--dust);line-height:1.6}
 
-    #philosophy { background: rgba(80,40,140,0.04); }
-    .philosophy-quote {
-      font-size: clamp(1.1rem, 2.2vw, 1.75rem); font-weight: 300; color: var(--glow);
-      line-height: 1.65; border-left: 1px solid var(--accent);
-      padding-left: 2.5rem; margin-bottom: 3rem;
-    }
-    .philosophy-body { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
-    .philosophy-block h4 { font-size: 0.95rem; font-weight: 600; letter-spacing: -0.01em; color: var(--star); margin-bottom: 0.8rem; }
-    .philosophy-block p { font-size: 0.88rem; font-weight: 300; line-height: 1.9; color: var(--dust); }
+/* ── CONTACT ── */
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;max-width:680px}
+.contact-card{
+  display:flex;align-items:center;gap:1rem;
+  padding:1rem 1.4rem;border:0.5px solid var(--border);border-radius:3px;
+  text-decoration:none;background:var(--card);transition:all 0.25s;
+}
+.contact-card:hover{border-color:var(--glow);background:rgba(196,176,255,0.05)}
+.contact-icon{width:34px;height:34px;border-radius:50%;background:rgba(196,176,255,0.08);display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;color:var(--glow)}
+.contact-label{font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--glow)}
+.contact-val{font-size:0.85rem;color:var(--star);margin-top:0.1rem}
 
-    .research-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-    .research-card {
-      background: var(--card-bg); border: 0.5px solid var(--border); border-radius: 3px;
-      padding: 2rem; transition: border-color 0.3s, background 0.3s;
-    }
-    .research-card:hover { border-color: rgba(200,184,255,0.3); background: rgba(200,184,255,0.04); }
-    .card-tag { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.8rem; }
-    .card-title { font-size: 1rem; font-weight: 600; letter-spacing: -0.01em; color: var(--star); margin-bottom: 0.8rem; line-height: 1.35; }
-    .card-desc { font-size: 0.85rem; font-weight: 300; line-height: 1.75; color: var(--dust); }
-    .card-footer { margin-top: 1.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--glow); }
-    .card-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--glow); }
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:1;
+  border-top:0.5px solid var(--border);
+  padding:1.8rem 3rem;
+}
+.footer-text{font-size:0.68rem;letter-spacing:0.08em;color:var(--dust)}
 
-    .timeline { display: flex; flex-direction: column; }
-    .timeline-item { display: grid; grid-template-columns: 180px 1px 1fr; gap: 0 2.5rem; padding-bottom: 3rem; }
-    .timeline-item:last-child { padding-bottom: 0; }
-    .timeline-date { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em; color: var(--glow); padding-top: 0.2rem; text-align: right; }
-    .timeline-line-wrap { display: flex; flex-direction: column; align-items: center; }
-    .timeline-dot { width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--glow); background: var(--deep); flex-shrink: 0; margin-top: 0.35rem; }
-    .timeline-line { width: 0.5px; flex: 1; background: var(--border); margin-top: 4px; }
-    .timeline-item:last-child .timeline-line { display: none; }
-    .timeline-content h3 { font-size: 1.05rem; font-weight: 600; letter-spacing: -0.01em; color: var(--star); margin-bottom: 0.2rem; }
-    .timeline-org { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.8rem; }
-    .timeline-desc { font-size: 0.87rem; font-weight: 300; line-height: 1.8; color: var(--dust); }
+/* ── ANIMATIONS ── */
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.fade{opacity:0;transform:translateY(14px);transition:opacity 0.65s ease,transform 0.65s ease}
+.fade.in{opacity:1;transform:translateY(0)}
 
-    #cv { text-align: center; }
-    .cv-inner { display: inline-flex; flex-direction: column; align-items: center; gap: 2rem; }
-    .cv-text { font-size: 0.9rem; font-weight: 300; color: var(--dust); max-width: 480px; line-height: 1.9; }
-
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; }
-    .contact-intro p { font-size: 0.95rem; font-weight: 300; line-height: 1.9; color: var(--dust); margin-bottom: 1.4rem; }
-    .contact-links { display: flex; flex-direction: column; gap: 1rem; }
-    .contact-link {
-      display: flex; align-items: center; gap: 1rem;
-      color: var(--dust); text-decoration: none;
-      padding: 1rem 1.4rem; border: 0.5px solid var(--border); border-radius: 3px; transition: all 0.3s;
-    }
-    .contact-link:hover { color: var(--star); border-color: rgba(200,184,255,0.3); background: rgba(200,184,255,0.03); }
-    .contact-link-label { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--glow); }
-    .contact-link-value { font-size: 0.86rem; color: var(--star); margin-top: 0.15rem; }
-
-    footer {
-      position: relative; z-index: 1;
-      border-top: 0.5px solid var(--border); padding: 2rem 4rem;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .footer-text { font-size: 0.7rem; letter-spacing: 0.08em; color: var(--dust); }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
-
-    @media (max-width: 860px) {
-      nav { padding: 1.2rem 2rem; }
-      .nav-links { gap: 1.5rem; }
-      #hero { padding-left: 2rem; padding-right: 2rem; }
-      section { padding: 5rem 2rem; }
-      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .about-portrait { display: none; }
-      .philosophy-body { grid-template-columns: 1fr; gap: 2rem; }
-      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .timeline-item { grid-template-columns: 90px 1px 1fr; gap: 0 1.5rem; }
-      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
-    }
-  </style>
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  header{padding:1rem 1.5rem}
+  .hero-wrap{padding:0 1.5rem;padding-top:90px}
+  .inner{padding:0 1.5rem}
+  .cv-grid{grid-template-columns:1fr}
+  footer{padding:1.5rem}
+}
+</style>
 </head>
 <body>
 
 <canvas id="starfield"></canvas>
-<div class="nebula nebula-1"></div>
-<div class="nebula nebula-2"></div>
-<div class="nebula nebula-3"></div>
+<div class="nebula nb1"></div>
+<div class="nebula nb2"></div>
+<div class="nebula nb3"></div>
 
-<nav>
-  <span class="nav-logo">André</span>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#philosophy">Philosophy</a></li>
-    <li><a href="#research">Research</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
+<!-- ── HEADER ── -->
+<header>
+  <div class="hdr-left">
+    <div class="coat-of-arms" title="Coat of Arms">⚜</div>
+  </div>
+  <div class="hdr-center">André Flores</div>
+  <div class="hdr-right">
+    <a href="mailto:eafp141@gmail.com">Contact</a>
+  </div>
+</header>
 
+<main>
+
+<!-- ══════════════════════ HERO ══════════════════════ -->
 <section id="hero">
-  <p class="hero-eyebrow">Lorem · Ipsum · Dolor</p>
-  <h1 class="hero-name">
-    André<br/>
-    <span>Flores</span>
-  </h1>
-  <p class="hero-tagline">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  </p>
-  <div class="hero-cta">
-    <a class="btn btn-outline" href="#research">Lorem ipsum</a>
-    <a class="btn btn-ghost" href="#cv">Dolor sit amet</a>
+  <div class="hero-wrap">
+    <p class="hero-eyebrow">Physics · Cosmology · Philosophy</p>
+    <h1 class="hero-name">André<br/><span>Flores</span></h1>
+    <p class="hero-sub">3rd year Physics Major at Simon Fraser University. Passionate about astronomy, cosmology and metaphysics.</p>
+    <div class="hero-btns">
+      <a class="btn btn-primary" href="#projects">Explore My Work</a>
+      <a class="btn btn-ghost" href="#cv">Download my CV</a>
+    </div>
   </div>
 </section>
 
-<div class="divider"></div>
+<!-- ══════════════════════ PROJECTS ══════════════════════ -->
+<section id="projects" class="section">
+  <div class="inner">
+    <p class="sec-label fade">Work</p>
+    <h2 class="sec-title fade">Projects & <span>Simulations</span></h2>
 
-<section id="about">
-  <p class="section-label fade-in">Lorem ipsum</p>
-  <h2 class="section-title fade-in">Dolor sit amet<br/><span>consectetur</span></h2>
-  <div class="about-grid">
-    <div class="about-portrait">
-      <span class="portrait-placeholder">A</span>
-      <span class="portrait-note">Replace with your photo</span>
+    <div class="filter-tabs fade">
+      <button class="ftab active" data-filter="cosmo">Cosmology & Astrophysics</button>
+      <button class="ftab" data-filter="misc">Miscellaneous</button>
+      <button class="ftab" data-filter="all">All</button>
     </div>
-    <div class="about-text fade-in">
-      <p>
-        Lorem ipsum dolor sit amet, <strong>consectetur adipiscing elit</strong>, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
-      </p>
-      <p>
-        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <strong>Excepteur sint occaecat cupidatat</strong> non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-      <p>
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo <strong>inventore veritatis</strong> et quasi architecto beatae vitae.
-      </p>
-      <div class="about-facts">
-        <div class="fact">
-          <div class="fact-label">Origin</div>
-          <div class="fact-value">Lorem, Ipsum</div>
+
+    <div class="proj-grid">
+      <div class="proj-card fade" data-cat="cosmo">
+        <div class="proj-tag">Cosmology · Relativity</div>
+        <div class="proj-title">lightcone.lc</div>
+        <p class="proj-desc">Interactive light cone visualizer exploring causal structure in Minkowski spacetime. Drag events, watch the causal future and past update in real time.</p>
+        <div class="proj-footer"><div class="proj-dot"></div><span class="proj-meta">Special Relativity</span></div>
+      </div>
+      <div class="proj-card fade" data-cat="cosmo">
+        <div class="proj-tag">General Relativity</div>
+        <div class="proj-title">Spacetime Curvature Simulator</div>
+        <p class="proj-desc">Visualizes geodesics and metric distortion around a massive body. Based on Schwarzschild geometry with adjustable mass parameter.</p>
+        <div class="proj-footer"><div class="proj-dot"></div><span class="proj-meta">GR · Numerical</span></div>
+      </div>
+      <div class="proj-card fade" data-cat="cosmo">
+        <div class="proj-tag">Special Relativity</div>
+        <div class="proj-title">Reference Frame Switcher</div>
+        <p class="proj-desc">Apply Lorentz boosts interactively. Observe time dilation, length contraction, and simultaneity breakdown across inertial frames.</p>
+        <div class="proj-footer"><div class="proj-dot"></div><span class="proj-meta">SR · Interactive</span></div>
+      </div>
+      <div class="proj-card fade" data-cat="cosmo">
+        <div class="proj-tag">Astrophysics · N-Body</div>
+        <div class="proj-title">Galaxy Collider</div>
+        <p class="proj-desc">N-body simulation of galactic mergers. Tune initial conditions, mass ratios, and impact parameter to produce spiral arms, tidal bridges, and merger remnants.</p>
+        <div class="proj-footer"><div class="proj-dot"></div><span class="proj-meta">N-Body · Simulation</span></div>
+      </div>
+      <div class="proj-card fade" data-cat="cosmo">
+        <div class="proj-tag">String Theory · Holography</div>
+        <div class="proj-title">AdS-CFT Simulation</div>
+        <p class="proj-desc">Toy model of the AdS/CFT correspondence. Explore the bulk-boundary duality: perturbations in the bulk AdS space reflected in the boundary CFT.</p>
+        <div class="proj-footer"><div class="proj-dot"></div><span class="proj-meta">Holography · QFT</span></div>
+      </div>
+      <div class="proj-card fade" data-cat="misc">
+        <div class="proj-tag">Mathematics · Fractal</div>
+        <div class="proj-title">Mandelbrot Generator</div>
+        <p class="proj-desc">GPU-accelerated Mandelbrot set explorer with arbitrary-precision zoom, custom color palettes, and Julia set cross-sections.</p>
+        <div class="proj-footer"><div class="proj-dot"></div><span class="proj-meta">Complex Analysis</span></div>
+      </div>
+      <div class="proj-card fade" data-cat="misc">
+        <div class="proj-tag">Game · Physics Engine</div>
+        <div class="proj-title">Lunar Lander</div>
+        <p class="proj-desc">Physics-accurate lunar lander game with realistic thrust, gravity, and fuel dynamics. Implements Runge-Kutta integration for smooth trajectory modeling.</p>
+        <div class="proj-footer"><div class="proj-dot"></div><span class="proj-meta">Classical Mechanics</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ ASTROPHOTOGRAPHY ══════════════════════ -->
+<section id="astrophotography" class="section">
+  <div class="inner">
+    <p class="sec-label fade">Gallery</p>
+    <h2 class="sec-title fade">Astrophotography <span>Work</span></h2>
+
+    <div class="astro-carousel fade">
+      <div class="carousel-track" id="carouselTrack">
+
+        <div class="carousel-slide">
+          <div class="slide-bg" style="background:radial-gradient(ellipse at 50% 60%,rgba(255,200,80,0.12),transparent 65%),linear-gradient(180deg,#060412,#0e0820)"></div>
+          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.35" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice">
+            <ellipse cx="400" cy="260" rx="380" ry="60" fill="none" stroke="rgba(196,176,255,0.6)" stroke-width="0.8" stroke-dasharray="4 6"/>
+            <circle cx="400" cy="225" r="30" fill="rgba(255,200,80,0.15)" stroke="rgba(255,200,80,0.5)" stroke-width="0.8"/>
+            <circle cx="240" cy="215" r="4" fill="rgba(196,176,255,0.8)"/>
+            <circle cx="560" cy="238" r="3" fill="rgba(196,176,255,0.7)"/>
+            <circle cx="160" cy="255" r="2.5" fill="rgba(150,200,255,0.6)"/>
+            <circle cx="620" cy="252" r="2" fill="rgba(255,180,100,0.7)"/>
+          </svg>
+          <div class="slide-label">Ecliptic</div>
+          <div class="slide-sub">Planetary plane</div>
         </div>
-        <div class="fact">
-          <div class="fact-label">Field</div>
-          <div class="fact-value">Dolor & Amet</div>
+
+        <div class="carousel-slide">
+          <div class="slide-bg" style="background:radial-gradient(circle at 50% 50%,rgba(255,140,30,0.2),rgba(200,80,20,0.08) 40%,transparent 70%),linear-gradient(180deg,#0a0408,#160808)"></div>
+          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.5" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice">
+            <circle cx="400" cy="225" r="90" fill="rgba(255,140,30,0.1)" stroke="rgba(255,160,50,0.25)" stroke-width="0.5"/>
+            <circle cx="400" cy="225" r="55" fill="rgba(255,160,50,0.14)" stroke="rgba(255,180,80,0.35)" stroke-width="0.5"/>
+            <circle cx="400" cy="225" r="30" fill="rgba(255,180,80,0.22)" stroke="rgba(255,200,100,0.55)" stroke-width="1"/>
+            <circle cx="400" cy="225" r="14" fill="rgba(255,210,120,0.4)"/>
+          </svg>
+          <div class="slide-label">Solar</div>
+          <div class="slide-sub">Sun & chromosphere</div>
         </div>
-        <div class="fact">
-          <div class="fact-label">Currently</div>
-          <div class="fact-value">Consectetur</div>
+
+        <div class="carousel-slide">
+          <div class="slide-bg" style="background:radial-gradient(ellipse at 30% 40%,rgba(100,150,255,0.14),transparent 60%),linear-gradient(200deg,#04040e,#080820)"></div>
+          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.5" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice">
+            <circle cx="200" cy="180" r="6" fill="rgba(200,220,255,0.9)"/>
+            <circle cx="260" cy="155" r="5" fill="rgba(200,220,255,0.85)"/>
+            <circle cx="330" cy="160" r="7" fill="rgba(200,220,255,0.95)"/>
+            <circle cx="400" cy="175" r="5" fill="rgba(200,220,255,0.8)"/>
+            <circle cx="440" cy="200" r="4" fill="rgba(200,220,255,0.75)"/>
+            <circle cx="480" cy="235" r="5.5" fill="rgba(200,220,255,0.88)"/>
+            <circle cx="540" cy="260" r="5" fill="rgba(200,220,255,0.82)"/>
+            <polyline points="200,180 260,155 330,160 400,175 440,200 480,235 540,260" fill="none" stroke="rgba(150,180,255,0.3)" stroke-width="1"/>
+          </svg>
+          <div class="slide-label">Ursa Major</div>
+          <div class="slide-sub">Great bear constellation</div>
         </div>
-        <div class="fact">
-          <div class="fact-label">Languages</div>
-          <div class="fact-value">Lorem · Ipsum</div>
+
+        <div class="carousel-slide">
+          <div class="slide-bg" style="background:radial-gradient(ellipse at 60% 50%,rgba(150,200,255,0.15),rgba(100,80,200,0.07) 40%,transparent 70%),linear-gradient(160deg,#040410,#0a0818)"></div>
+          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.55" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice">
+            <circle cx="310" cy="130" r="7" fill="rgba(200,220,255,0.9)"/>
+            <circle cx="490" cy="145" r="5" fill="rgba(255,180,130,0.9)"/>
+            <circle cx="340" cy="222" r="8" fill="rgba(200,220,255,0.95)"/>
+            <circle cx="400" cy="224" r="8" fill="rgba(200,220,255,0.95)"/>
+            <circle cx="460" cy="226" r="8" fill="rgba(200,220,255,0.95)"/>
+            <circle cx="280" cy="242" r="4" fill="rgba(200,220,255,0.75)"/>
+            <circle cx="520" cy="250" r="4" fill="rgba(200,220,255,0.8)"/>
+            <circle cx="360" cy="312" r="5" fill="rgba(200,220,255,0.7)"/>
+            <circle cx="440" cy="316" r="5" fill="rgba(200,220,255,0.72)"/>
+            <polyline points="310,130 280,242 340,222 400,224 460,226 520,250 490,145" fill="none" stroke="rgba(150,180,255,0.28)" stroke-width="0.8"/>
+          </svg>
+          <div class="slide-label">Orion</div>
+          <div class="slide-sub">Hunter constellation & nebula</div>
+        </div>
+
+      </div>
+      <button class="carousel-btn carousel-prev" id="carPrev">&#8592;</button>
+      <button class="carousel-btn carousel-next" id="carNext">&#8594;</button>
+    </div>
+
+    <div class="carousel-dots" id="carDots">
+      <div class="cdot active" data-i="0"></div>
+      <div class="cdot" data-i="1"></div>
+      <div class="cdot" data-i="2"></div>
+      <div class="cdot" data-i="3"></div>
+    </div>
+
+    <a class="astro-link fade" href="https://www.astrobin.com" target="_blank">View full gallery on Astrobin &#8599;</a>
+  </div>
+</section>
+
+<!-- ══════════════════════ PHILOSOPHY ══════════════════════ -->
+<section id="philosophy" class="section">
+  <div class="inner">
+    <p class="sec-label fade">Metaphysics & Insights</p>
+    <h2 class="sec-title fade">Philosophy <span>& Open Questions</span></h2>
+
+    <p class="phil-sub fade">Interactive Insights</p>
+    <div class="phil-grid">
+      <a class="phil-card fade" href="#" target="_blank">
+        <div class="phil-card-title">Phaedo</div>
+        <div class="phil-card-arrow">&#8599;</div>
+      </a>
+      <a class="phil-card fade" href="#" target="_blank">
+        <div class="phil-card-title">Timaeus</div>
+        <div class="phil-card-arrow">&#8599;</div>
+      </a>
+    </div>
+
+    <div class="divider"></div>
+
+    <p class="phil-sub fade">Open Questions & Topics</p>
+    <div class="filter-tabs fade">
+      <button class="ftab active" data-qfilter="questions">Questions</button>
+      <button class="ftab" data-qfilter="topics">Topics</button>
+      <button class="ftab" data-qfilter="all">All</button>
+    </div>
+
+    <div class="q-grid">
+
+      <div class="q-card fade" data-qcat="questions">
+        <div class="q-card-video">
+          <div class="q-card-video-bg" style="background:radial-gradient(ellipse at 40% 60%,rgba(80,40,180,0.35),transparent 70%),linear-gradient(160deg,#07041a,#0d0820)"></div>
+          <svg style="position:relative;z-index:1;opacity:0.55" width="52" height="52" viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="28" fill="none" stroke="rgba(196,176,255,0.4)" stroke-width="0.8"/>
+            <circle cx="30" cy="30" r="16" fill="none" stroke="rgba(196,176,255,0.25)" stroke-width="0.6"/>
+            <circle cx="30" cy="30" r="3" fill="rgba(196,176,255,0.6)"/>
+          </svg>
+          <a class="q-card-info" href="#" target="_blank">info &#8599;</a>
+        </div>
+        <div class="q-card-body">
+          <div class="q-card-type">Open Question</div>
+          <div class="q-card-text">What was God doing before creating the universe?</div>
         </div>
       </div>
+
+      <div class="q-card fade" data-qcat="questions">
+        <div class="q-card-video">
+          <div class="q-card-video-bg" style="background:radial-gradient(ellipse at 60% 40%,rgba(40,20,120,0.4),transparent 65%),linear-gradient(200deg,#050310,#0a0818)"></div>
+          <svg style="position:relative;z-index:1;opacity:0.5" width="52" height="52" viewBox="0 0 60 60">
+            <line x1="30" y1="5" x2="30" y2="55" stroke="rgba(196,176,255,0.5)" stroke-width="0.8"/>
+            <line x1="5" y1="30" x2="55" y2="30" stroke="rgba(196,176,255,0.5)" stroke-width="0.8"/>
+            <circle cx="30" cy="30" r="12" fill="none" stroke="rgba(196,176,255,0.3)" stroke-width="0.8"/>
+          </svg>
+          <a class="q-card-info" href="#" target="_blank">info &#8599;</a>
+        </div>
+        <div class="q-card-body">
+          <div class="q-card-type">Open Question</div>
+          <div class="q-card-text">Why does something exist instead of nothing?</div>
+        </div>
+      </div>
+
+      <div class="q-card fade" data-qcat="topics">
+        <div class="q-card-video">
+          <div class="q-card-video-bg" style="background:radial-gradient(circle at 50% 50%,rgba(100,50,200,0.3),rgba(20,10,80,0.5) 50%,transparent 75%),linear-gradient(180deg,#060414,#0c0820)"></div>
+          <svg style="position:relative;z-index:1;opacity:0.55" width="52" height="52" viewBox="0 0 60 60">
+            <rect x="18" y="18" width="24" height="24" fill="none" stroke="rgba(196,176,255,0.5)" stroke-width="0.8" transform="rotate(15 30 30)"/>
+            <rect x="18" y="18" width="24" height="24" fill="none" stroke="rgba(196,176,255,0.3)" stroke-width="0.6" transform="rotate(-15 30 30)"/>
+          </svg>
+          <a class="q-card-info" href="#" target="_blank">info &#8599;</a>
+        </div>
+        <div class="q-card-body">
+          <div class="q-card-type">Topic</div>
+          <div class="q-card-text">Non-Property Entities</div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
-<div class="divider"></div>
-
-<section id="philosophy">
-  <p class="section-label fade-in">Lorem ipsum</p>
-  <h2 class="section-title fade-in">Dolor sit amet<br/><span>adipiscing elit</span></h2>
-  <blockquote class="philosophy-quote fade-in">
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-  </blockquote>
-  <div class="philosophy-body">
-    <div class="philosophy-block fade-in">
-      <h4>Lorem ipsum dolor</h4>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
-    <div class="philosophy-block fade-in">
-      <h4>Sed ut perspiciatis</h4>
-      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt.</p>
-    </div>
-    <div class="philosophy-block fade-in">
-      <h4>Nemo enim ipsam</h4>
-      <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt neque porro quisquam est qui dolorem.</p>
-    </div>
-    <div class="philosophy-block fade-in">
-      <h4>Quis autem vel</h4>
-      <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur vel illum qui dolorem eum fugiat quo voluptas nulla pariatur et harum quidem rerum.</p>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<section id="research">
-  <p class="section-label fade-in">Lorem ipsum</p>
-  <h2 class="section-title fade-in">Dolor sit amet<br/><span>consectetur</span></h2>
-  <div class="research-grid">
-    <div class="research-card fade-in">
-      <div class="card-tag">Lorem · Ipsum</div>
-      <div class="card-title">Lorem ipsum dolor sit amet consectetur</div>
-      <p class="card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam.</p>
-      <div class="card-footer"><div class="card-dot"></div>Lorem · 2026</div>
-    </div>
-    <div class="research-card fade-in">
-      <div class="card-tag">Dolor · Amet</div>
-      <div class="card-title">Sed ut perspiciatis unde omnis</div>
-      <p class="card-desc">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium totam rem aperiam eaque ipsa quae ab illo inventore.</p>
-      <div class="card-footer"><div class="card-dot"></div>Ipsum · Coursework</div>
-    </div>
-    <div class="research-card fade-in">
-      <div class="card-tag">Consectetur</div>
-      <div class="card-title">Nemo enim ipsam voluptatem sequi</div>
-      <p class="card-desc">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed quia consequuntur magni dolores eos qui ratione sequi nesciunt.</p>
-      <div class="card-footer"><div class="card-dot"></div>Lorem · 2025</div>
-    </div>
-    <div class="research-card fade-in">
-      <div class="card-tag">Adipiscing · Elit</div>
-      <div class="card-title">Quis autem vel eum iure reprehenderit</div>
-      <p class="card-desc">Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur vel illum dolorem eum fugiat quo.</p>
-      <div class="card-footer"><div class="card-dot"></div>Lorem · In progress</div>
-    </div>
-    <div class="research-card fade-in" style="border-style: dashed; opacity: 0.45;">
-      <div class="card-tag">Add your project</div>
-      <div class="card-title">Your next project here</div>
-      <p class="card-desc">Edit index.html to add your own research, papers, or side projects in this card.</p>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<section id="experience">
-  <p class="section-label fade-in">Lorem ipsum</p>
-  <h2 class="section-title fade-in">Dolor sit<br/><span>amet consectetur</span></h2>
-  <div class="timeline">
-    <div class="timeline-item fade-in">
-      <div class="timeline-date">2024 – Now</div>
-      <div class="timeline-line-wrap"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
-      <div class="timeline-content">
-        <h3>Lorem Ipsum Manager</h3>
-        <div class="timeline-org">Dolor Sit Amet — Consectetur</div>
-        <p class="timeline-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris.</p>
-      </div>
-    </div>
-    <div class="timeline-item fade-in">
-      <div class="timeline-date">2024</div>
-      <div class="timeline-line-wrap"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
-      <div class="timeline-content">
-        <h3>Dolor Amet Competitor</h3>
-        <div class="timeline-org">Lorem Ipsum & Adipiscing Competition</div>
-        <p class="timeline-desc">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium totam rem aperiam eaque ipsa quae ab illo inventore veritatis.</p>
-      </div>
-    </div>
-    <div class="timeline-item fade-in">
-      <div class="timeline-date">2023 – Now</div>
-      <div class="timeline-line-wrap"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
-      <div class="timeline-content">
-        <h3>Lorem Ipsum Student</h3>
-        <div class="timeline-org">Consectetur University (Abroad)</div>
-        <p class="timeline-desc">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
-      </div>
-    </div>
-    <div class="timeline-item fade-in">
-      <div class="timeline-date">Add more</div>
-      <div class="timeline-line-wrap"><div class="timeline-dot" style="border-style:dashed;opacity:0.35;"></div></div>
-      <div class="timeline-content" style="opacity:0.35;">
-        <h3>Your previous role</h3>
-        <div class="timeline-org">Organization</div>
-        <p class="timeline-desc">Edit index.html to fill in your experience timeline.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<section id="cv">
-  <p class="section-label fade-in">Curriculum Vitae</p>
-  <h2 class="section-title fade-in">Lorem ipsum<br/><span>dolor sit</span></h2>
-  <div class="cv-inner fade-in">
-    <p class="cv-text">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Place your PDF as <code style="font-size:0.82em;color:var(--glow);font-family:'DM Mono',monospace;">cv.pdf</code> in the same folder.
+<!-- ══════════════════════ CV ══════════════════════ -->
+<section id="cv" class="section">
+  <div class="inner">
+    <p class="sec-label fade">Curriculum Vitae</p>
+    <h2 class="sec-title fade">Download <span>My CV</span></h2>
+    <p style="font-size:0.92rem;font-weight:300;color:var(--dust);margin-bottom:2.5rem;max-width:480px;line-height:1.85" class="fade">
+      Available in two versions. Place <span style="font-family:var(--mono);color:var(--glow);font-size:0.82em">cv-en.pdf</span> and <span style="font-family:var(--mono);color:var(--glow);font-size:0.82em">cv-es.pdf</span> alongside this file.
     </p>
-    <a class="btn btn-outline" href="cv.pdf" download>Download CV (PDF)</a>
+    <div class="cv-grid fade">
+      <div class="cv-card">
+        <div class="cv-lang">English</div>
+        <p class="cv-note">Full academic and professional curriculum vitae in English.</p>
+        <a class="btn btn-primary" href="cv-en.pdf" download>Download EN</a>
+      </div>
+      <div class="cv-card">
+        <div class="cv-lang">Español</div>
+        <p class="cv-note">Currículum vitae completo en español.</p>
+        <a class="btn btn-primary" href="cv-es.pdf" download>Descargar ES</a>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <p class="sec-label fade">Contact</p>
+    <h2 class="sec-title fade" style="margin-bottom:1.5rem">Get in <span>Touch</span></h2>
+    <div class="contact-grid fade">
+      <a class="contact-card" href="mailto:eafp141@gmail.com">
+        <div class="contact-icon">✉</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-val">eafp141@gmail.com</div>
+        </div>
+      </a>
+      <a class="contact-card" href="https://www.linkedin.com/in/eafp/" target="_blank">
+        <div class="contact-icon" style="font-size:0.8rem;font-weight:600">in</div>
+        <div>
+          <div class="contact-label">LinkedIn</div>
+          <div class="contact-val">linkedin.com/in/eafp</div>
+        </div>
+      </a>
+      <a class="contact-card" href="https://github.com/eaphys" target="_blank">
+        <div class="contact-icon" style="font-family:var(--mono);font-size:0.78rem">gh</div>
+        <div>
+          <div class="contact-label">GitHub</div>
+          <div class="contact-val">github.com/eaphys</div>
+        </div>
+      </a>
+    </div>
   </div>
 </section>
 
-<div class="divider"></div>
+</main>
 
-<section id="contact">
-  <p class="section-label fade-in">Contact</p>
-  <h2 class="section-title fade-in">Lorem ipsum<br/><span>dolor amet</span></h2>
-  <div class="contact-grid">
-    <div class="contact-intro fade-in">
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud.</p>
-      <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident.</p>
-    </div>
-    <div class="contact-links fade-in">
-      <a class="contact-link" href="mailto:your@email.com">
-        <div><div class="contact-link-label">Email</div><div class="contact-link-value">your@email.com</div></div>
-      </a>
-      <a class="contact-link" href="https://linkedin.com/in/yourprofile" target="_blank">
-        <div><div class="contact-link-label">LinkedIn</div><div class="contact-link-value">linkedin.com/in/yourprofile</div></div>
-      </a>
-      <a class="contact-link" href="https://github.com/yourusername" target="_blank">
-        <div><div class="contact-link-label">GitHub</div><div class="contact-link-value">github.com/yourusername</div></div>
-      </a>
-    </div>
-  </div>
-</section>
-
+<!-- ══════════════════════ FOOTER ══════════════════════ -->
 <footer>
-  <span class="footer-text">© 2025 André — Built for GitHub Pages</span>
-  <span class="footer-text">Lorem · Ipsum · Dolor</span>
+  <span class="footer-text">© 2026 André Flores — Built for GitHub Pages</span>
 </footer>
 
 <script>
-  const canvas = document.getElementById('starfield');
-  const ctx = canvas.getContext('2d');
-  let stars = [];
-  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-  function initStars() {
-    stars = [];
-    const count = Math.floor((canvas.width * canvas.height) / 4000);
-    for (let i = 0; i < count; i++) {
-      stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*1.2+0.2, a: Math.random(), speed: Math.random()*0.3+0.05 });
-    }
-  }
-  function drawStars() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    stars.forEach(s => {
-      s.a += s.speed*0.008;
-      const alpha = (Math.sin(s.a)+1)/2*0.8+0.1;
-      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(240,237,230,${alpha})`; ctx.fill();
-    });
-    requestAnimationFrame(drawStars);
-  }
-  resize(); initStars(); drawStars();
-  window.addEventListener('resize', ()=>{ resize(); initStars(); });
+/* ── STARFIELD ── */
+const cvs=document.getElementById('starfield');
+const cx=cvs.getContext('2d');
+let S=[];
+function rsz(){cvs.width=window.innerWidth;cvs.height=window.innerHeight}
+function iS(){S=[];const n=Math.floor(cvs.width*cvs.height/3500);for(let i=0;i<n;i++)S.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,r:Math.random()*1.1+0.15,a:Math.random(),sp:Math.random()*0.25+0.04})}
+function dS(){cx.clearRect(0,0,cvs.width,cvs.height);S.forEach(s=>{s.a+=s.sp*0.008;const al=(Math.sin(s.a)+1)/2*0.75+0.1;cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);cx.fillStyle=`rgba(238,234,248,${al})`;cx.fill()});requestAnimationFrame(dS)}
+rsz();iS();dS();
+window.addEventListener('resize',()=>{rsz();iS()});
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+/* ── SCROLL FADE-IN ── */
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
+},{threshold:0.1});
+document.querySelectorAll('.fade').forEach(el=>io.observe(el));
+
+/* ── PROJECT FILTER ── */
+document.querySelectorAll('[data-filter]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('[data-filter]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.filter;
+    document.querySelectorAll('.proj-card').forEach(c=>{
+      f==='all'||c.dataset.cat===f?c.removeAttribute('data-hidden'):c.setAttribute('data-hidden','');
+    });
+  });
+});
+
+/* ── CAROUSEL ── */
+let carIdx=0;
+const track=document.getElementById('carouselTrack');
+const dots=document.querySelectorAll('.cdot');
+const total=4;
+function goTo(i){
+  carIdx=(i+total)%total;
+  track.style.transform=`translateX(-${carIdx*100}%)`;
+  dots.forEach((d,j)=>d.classList.toggle('active',j===carIdx));
+}
+document.getElementById('carPrev').addEventListener('click',()=>goTo(carIdx-1));
+document.getElementById('carNext').addEventListener('click',()=>goTo(carIdx+1));
+dots.forEach(d=>d.addEventListener('click',()=>goTo(+d.dataset.i)));
+setInterval(()=>goTo(carIdx+1),5000);
+
+/* ── QUESTION FILTER ── */
+document.querySelectorAll('[data-qfilter]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('[data-qfilter]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.qfilter;
+    document.querySelectorAll('.q-card').forEach(c=>{
+      f==='all'||c.dataset.qcat===f?c.removeAttribute('data-hidden'):c.setAttribute('data-hidden','');
+    });
+  });
+});
 </script>
 </body>
 </html>
+
